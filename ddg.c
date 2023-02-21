@@ -6,7 +6,13 @@ int main()
     return 0;
 }
 
-int ddg(int n, struct vector *points)
+int ddg(int n, Vector *points)
 {
+    int matrix[n][n];
+    memset( matrix, 0, n*n*sizeof(int) );
+    int i, j;
+    for (i = 0; i < n; i++)
+    {
 
+    }
 }
