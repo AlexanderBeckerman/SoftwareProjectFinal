@@ -20,4 +20,4 @@ typedef struct vector Vector;
 typedef struct cord Cord;
 
 double ** ddg(int, Vector *);
-int wam(Vector *, int);
+double ** wam(Vector *, int);

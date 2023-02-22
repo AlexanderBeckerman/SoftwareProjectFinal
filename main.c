@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     char * command = argv[1];
     char * filename = argv[2];
     double n;
-    int numpoints;
+    int numpoints=0;
     char c;
     struct vector *head_vec;
     struct vector *curr_vec;
@@ -54,10 +54,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-
-
-
-
+    fclose(file);
     printf("Hello, World!\n");
     return 0;
 }

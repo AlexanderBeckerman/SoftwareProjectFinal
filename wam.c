@@ -2,7 +2,7 @@
 
 double calcDistance(Vector*,Vector*);
 
-int wam(Vector * head, int numpoints){
+double** wam(Vector * head, int numpoints){
     Vector * curr1 = head;
     int row=0;
     int col=0;
@@ -33,7 +33,7 @@ int wam(Vector * head, int numpoints){
         }
         printf("\n");
     }
-
+    return (double **) matrix;
 }
 
 double calcDistance(Vector * point1,  Vector * point2){
