@@ -1,6 +1,6 @@
 #include "spkmeans.h"
 
-double ** ddg(int n, Vector *points)
+double ** ddg(Vector * points, int n)
 {
     double ** weighted = wam(points, n);
     double ** diagonal = calloc(n , sizeof (double *));

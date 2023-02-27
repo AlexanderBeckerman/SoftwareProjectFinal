@@ -19,5 +19,6 @@ struct vector
 typedef struct vector Vector;
 typedef struct cord Cord;
 
-double ** ddg(int, Vector *);
+double ** ddg(Vector *, int);
 double ** wam(Vector *, int);
+double ** lg(Vector *, int);
