@@ -8,7 +8,11 @@ double** wam(Vector * head, int numpoints){
     int col=0;
     int i,j;
     Vector * curr2 = curr1;
-    double matrix[numpoints][numpoints];
+    double ** matrix = calloc(numpoints, sizeof(double*));
+    for(int i=0;i<numpoints;i++){
+        matrix[i] = calloc(numpoints, sizeof(double*));
+    }
+
     while(curr1 != NULL){
         while(curr2 != NULL){
             if(curr1 == curr2) {
@@ -33,7 +37,7 @@ double** wam(Vector * head, int numpoints){
         }
         printf("\n");
     }
-    return (double **) matrix;
+    return matrix;
 }
 
 double calcDistance(Vector * point1,  Vector * point2){
