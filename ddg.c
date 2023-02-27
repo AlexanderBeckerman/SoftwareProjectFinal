@@ -1,4 +1,4 @@
-#include "project_header.h"
+#include "spkmeans.h"
 
 //int main()
 //{

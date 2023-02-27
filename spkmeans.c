@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
-#include "project_header.h"
+#include "spkmeans.h"
 
 
 int main(int argc, char *argv[]) {
@@ -56,5 +52,6 @@ int main(int argc, char *argv[]) {
 
     fclose(file);
     printf("Hello, World!\n");
+    wam(head_vec ,numpoints);
     return 0;
 }

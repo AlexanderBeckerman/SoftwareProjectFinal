@@ -1,4 +1,4 @@
-#include "project_header.h"
+#include "spkmeans.h"
 
 double calcDistance(Vector*,Vector*);
 
@@ -9,7 +9,7 @@ double** wam(Vector * head, int numpoints){
     int i,j;
     Vector * curr2 = curr1;
     double ** matrix = calloc(numpoints, sizeof(double*));
-    for(int i=0;i<numpoints;i++){
+    for(i=0;i<numpoints;i++){
         matrix[i] = calloc(numpoints, sizeof(double*));
     }
 
