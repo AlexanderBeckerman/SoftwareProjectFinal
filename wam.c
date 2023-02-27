@@ -9,15 +9,16 @@ double** wam(Vector * head, int numpoints){
     int i,j;
     Vector * curr2 = curr1;
     double ** matrix = calloc(numpoints, sizeof(double*));
-    for(int i=0;i<numpoints;i++){
+    for(i=0;i<numpoints;i++){
         matrix[i] = calloc(numpoints, sizeof(double*));
     }
 
-    while(curr1 != NULL){
-        while(curr2 != NULL){
+    while(curr1->cords != NULL){
+        while(curr2->cords != NULL){
             if(curr1 == curr2) {
                 matrix[row][row] = 0;
                 col++;
+                curr2 = curr2->next;
                 continue;
             }
             double distance = calcDistance(curr1, curr2);
@@ -49,6 +50,5 @@ double calcDistance(Vector * point1,  Vector * point2){
         pointCords = pointCords->next;
         centroidCords = centroidCords->next;
     }
-    diff = sqrt(diff);
     return diff;
 }
