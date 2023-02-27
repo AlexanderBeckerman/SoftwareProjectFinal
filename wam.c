@@ -32,11 +32,12 @@ double** wam(Vector * head, int numpoints){
         row++;
         curr1 = curr1->next;
     }
-    for(i=0;i<numpoints;i++){
-        for(j=0;j<numpoints;j++){
-            printf("row: %i col: %i value: %f ", i,j,matrix[i][j]);
-        }
-        printf("\n");
+    for (i = 0; i < numpoints; i++)
+    {
+        printf("[");
+        for (j = 0; j < numpoints; j++)
+            printf(" %.6f ", matrix[i][j]);
+        printf("]\n");
     }
     return matrix;
 }
