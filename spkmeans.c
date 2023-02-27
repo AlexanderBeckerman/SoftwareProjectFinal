@@ -52,6 +52,8 @@ int main(int argc, char *argv[]) {
 
     fclose(file);
     printf("Hello, World!\n");
-    wam(head_vec ,numpoints);
+    //wam(head_vec ,numpoints);
+    //ddg(numpoints ,head_vec);
+    gl(head_vec, numpoints);
     return 0;
 }

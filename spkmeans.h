@@ -21,4 +21,4 @@ typedef struct cord Cord;
 
 double ** ddg(Vector *, int);
 double ** wam(Vector *, int);
-double ** lg(Vector *, int);
+double ** gl(Vector *, int);

@@ -7,4 +7,5 @@ add_executable(SoftwareProjectFinal spkmeans.c
         spkmeans.h
         wam.c
         ddg.c
+        gl.c
         Makefile)
