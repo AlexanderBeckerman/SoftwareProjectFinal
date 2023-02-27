@@ -2,19 +2,19 @@ build: spkmeans.o spk.o wam.c ddg.c gl.o jacobi.o spkmeans.h
 	gcc -o spkmeans spkmeans.o spk.o wam.c ddg.c gl.o jacobi.o
 
 main.o: spkmeans.c
-	gcc -c spkmeans.c
+	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm spkmeans.c
 
 spk.o: spk.c
-	gcc -c spk.c
+	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm spk.c
 
 wam.o: wam.c
-	gcc -c wam.c
+	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm wam.c
 
 ddg.o: ddg.c
-	gcc -c ddg.c
+	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm ddg.c
 
 gl.o: gl.c
-	gcc -c gl.c
+	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm gl.c
 
 jacobi.o: jacobi.c
-	gcc -c jacobi.c
+	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm jacobi.c
