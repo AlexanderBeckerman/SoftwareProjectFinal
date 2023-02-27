@@ -15,14 +15,16 @@ double** wam(Vector * head, int numpoints){
 
     while(curr1->cords != NULL){
         while(curr2->cords != NULL){
+            double distance;
+            double exponent;
             if(curr1 == curr2) {
                 matrix[row][row] = 0;
                 col++;
                 curr2 = curr2->next;
                 continue;
             }
-            double distance = calcDistance(curr1, curr2);
-            double exponent = -1*(distance/2);
+             distance = calcDistance(curr1, curr2);
+             exponent = -1*(distance/2);
             matrix[row][col] = exp(exponent);
             col++;
             curr2 = curr2->next;
