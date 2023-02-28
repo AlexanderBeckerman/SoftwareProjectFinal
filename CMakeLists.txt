@@ -3,9 +3,11 @@ project(SoftwareProjectFinal C)
 
 set(CMAKE_C_STANDARD 90)
 
-add_executable(SoftwareProjectFinal spkmeans.c
-        spkmeans.h
-        wam.c
+add_executable(SoftwareProjectFinal spkmeans.h
+        spkmeans.c
         ddg.c
         gl.c
-        Makefile)
+        spk.c
+        wam.c
+        Makefile
+        jacobi.c)
