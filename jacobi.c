@@ -25,7 +25,20 @@ void transform(double ** a, double ** p) // s
 
 double ** mult(double ** a, double ** b) // y
 {
+    double ** result = calloc(N , sizeof (double *));
+    int i, j, k;
+    for (i = 0; i < N; i++) {
+        result[i] = calloc(N , sizeof (double));
+        for (j = 0; i < N; i++) {
+            int sum = 0;
+            for (k = 0; i < N; i++) {
+                sum += a[i][k] * b[k][j];
+            }
+            result[i][j] = sum;
+        }
+    }
 
+    return result;
 }
 
 double ** createP(int i, int j) // s
