@@ -20,7 +20,7 @@ double getOff(double ** a) // y
     return sum;
 }
 
-double** transform(double ** a, double ** p, int numpoints) // s
+double** transform(double ** a, double ** p) // s
 {
     int row=0,col=0;
     int * iandj = findLargestValue(a);
@@ -29,12 +29,12 @@ double** transform(double ** a, double ** p, int numpoints) // s
     int* cands = getCandS(a);
     double c = cands[0];
     double s = cands[1];
-    double ** newA = calloc(numpoints, sizeof(double*));
-    for(row=0;row<numpoints;row++){
-        newA[row] = calloc(numpoints, sizeof(double*));
+    double ** newA = calloc(N, sizeof(double*));
+    for(row=0;row<N;row++){
+        newA[row] = calloc(N, sizeof(double*));
     }
-    for(row=0;row<numpoints;row++){
-        for(col=0; col< numpoints; col++){
+    for(row=0;row<N;row++){
+        for(col=0; col< N; col++){
             if(row != i && row != j && col == i){
                 newA[row][i] = c*a[row][i] - s*a[row][j];
             }
@@ -79,7 +79,7 @@ double ** mult(double ** a, double ** b) // y
     return result;
 }
 
-double ** createP(double ** a, int i, int j, int numpoints) // s
+double ** createP(double ** a, int i, int j) // s
 {
     int row;
     int col;
@@ -87,12 +87,12 @@ double ** createP(double ** a, int i, int j, int numpoints) // s
     double c = cands[0];
     double s = cands[1];
 
-    double ** matrix = calloc(numpoints, sizeof(double*));
-    for(row=0;row<numpoints;row++){
-        matrix[i] = calloc(numpoints, sizeof(double*));
+    double ** matrix = calloc(N, sizeof(double*));
+    for(row=0;row<N;row++){
+        matrix[i] = calloc(N, sizeof(double*));
     }
-    for(row=0; row < numpoints; row++){
-        for(col=0; col< numpoints; col++){
+    for(row=0; row < N; row++){
+        for(col=0; col< N; col++){
             if(row == col){
                 if(row == i || row == j){
                     matrix[row][col] = c;
@@ -133,35 +133,30 @@ int * findLargestValue(double ** a) // y
     return indexes;
 }
 
-int * getCT(double ** a) // s
-{
-
-}
-
 int* getCandS(double ** a) // s
 {
-    int * iandj = findLargestValue(a);
-    int i=iandj[0];
-    int j=iandj[1];
+    int *iandj = findLargestValue(a);
+    int i = iandj[0];
+    int j = iandj[1];
     double aii = a[i][i];
     double aij = a[i][j];
     double ajj = a[j][j];
-    double c=0,theta=0,s=0,t=0;
+    double c = 0, theta = 0, s = 0, t = 0;
     int sign;
 
-    theta = (ajj - aii)/(2*aij);
-    if(theta >= 0)
+    theta = (ajj - aii) / (2 * aij);
+    if (theta >= 0)
         sign = 1;
     else
         sign = -1;
-    t = sign/(fabs(theta) + sqrt(theta*theta + 1));
-    c = 1/(sqrt(t*t + 1));
-    s = t*c;
-    int * results = calloc(2, sizeof(double));
+    t = sign / (fabs(theta) + sqrt(theta * theta + 1));
+    c = 1 / (sqrt(t * t + 1));
+    s = t * c;
+    int *results = calloc(2, sizeof(double));
     results[0] = c;
     results[1] = s;
     return results;
-
+}
 int compare(const void * a, const void * b)
 {
     double x = *((double *)a);
