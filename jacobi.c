@@ -17,13 +17,15 @@ double ** jacobi(double ** L, int n)
     double ** newL;
     double epsilon = 0.00001;
     double offset = getOff(L, n);
+    double offsetDiff = epsilon + 1;
     double ** V = createP(L, n);
     double * eigenValues = malloc(n* sizeof(double));
 
-    while(offset > epsilon && rotations < 100){
+    while(offsetDiff > epsilon && rotations < 100){
 
         L = transform(L, n);
-        offset = offset  - getOff(L, n);
+        offsetDiff = offset - getOff(L, n);
+        offset = getOff(L, n);
         printf("\n");
         for (i = 0; i < n; i++)
         {
