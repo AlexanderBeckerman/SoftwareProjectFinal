@@ -6,7 +6,6 @@ int eigenGap(double *  ,int);
 double** transform(double ** ,int);
 int* findLargestValue(double **  ,int);
 double ** mult(double **, double ** ,int);
-
 double ** jacobi(double ** L, int n)
 {
     int j;
@@ -25,29 +24,23 @@ double ** jacobi(double ** L, int n)
         L = transform(L, n);
         offsetDiff = offset - getOff(L, n);
         offset = getOff(L, n);
-        printf("\n");
-        for (i = 0; i < n; i++)
-        {
-            printf("[");
-            for (j = 0; j < n; j++)
-                printf(" %.4f ", L[i][j]);
-            printf("]\n");
-        }
         rotations++;
+
         V = mult(V, createP(L, n), n);
+//        printf("---- V : ----- \n");
 //        for (i = 0; i < n; i++)
 //        {
-//            printf("[");
 //            for (j = 0; j < n; j++)
 //                printf(" %.4f ", V[i][j]);
-//            printf("]\n");
+//            printf("\n");
 //        }
-        printf("\n");
+//        printf("\n");
+
     }
 
     for(j = 0; j < n; j++){
         eigenValues[j] = L[j][j];
-        printf("%f , ", eigenValues[j]);
+        printf("%.4f , ", eigenValues[j]);
     }
 
     gap = eigenGap(eigenValues, n);
@@ -56,9 +49,8 @@ double ** jacobi(double ** L, int n)
         result[i] = calloc(gap, sizeof(double));
         for (j = 0; j < gap; j++) {
             result[i][j] = V[i][j];
-//            printf("%f", result[i][j]);
         }
-        // printf("\n");
+
     }
 
 
@@ -124,11 +116,9 @@ double ** mult(double ** a, double ** b , int n)
     for (i = 0; i < n; i++) {
         result[i] = calloc(n , sizeof (double));
         for (j = 0; j < n; j++) {
-            int sum = 0;
             for (k = 0; k < n; k++) {
-                sum += a[i][k] * b[k][j];
+                result[i][j] += a[i][k] * b[k][j];
             }
-            result[i][j] = sum;
         }
     }
 
