@@ -207,7 +207,7 @@ int compare(const void * a, const void * b)
         return 1;
 }
 
-int eigenGap(double * eigenValues) 
+int eigenGap(double * eigenValues)
 {
     double max = 0;
     int index, i = 0;
