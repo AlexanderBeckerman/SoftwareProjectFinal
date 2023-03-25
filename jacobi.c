@@ -14,7 +14,6 @@ double ** jacobi(double ** L, int n)
     int gap;
     int rotations=0;
     double ** result;
-    double ** newL;
     double epsilon = 0.00001;
     double offset = getOff(L, n);
     double offsetDiff = epsilon + 1;
@@ -26,16 +25,24 @@ double ** jacobi(double ** L, int n)
         L = transform(L, n);
         offsetDiff = offset - getOff(L, n);
         offset = getOff(L, n);
-        printf("\n");
+//        printf("\n");
+//        for (i = 0; i < n; i++)
+//        {
+//            printf("[");
+//            for (j = 0; j < n; j++)
+//                printf(" %.4f ", L[i][j]);
+//            printf("]\n");
+//        }
+        rotations++;
+        V = mult(V, createP(L, n), n);
         for (i = 0; i < n; i++)
         {
             printf("[");
             for (j = 0; j < n; j++)
-                printf(" %.4f ", L[i][j]);
+                printf(" %.4f ", V[i][j]);
             printf("]\n");
         }
-        rotations++;
-        V = mult(V, createP(L, n), n);
+        printf("\n");
     }
 
 //    for (i = 0; i < n; i++)
@@ -58,10 +65,11 @@ double ** jacobi(double ** L, int n)
         result[i] = calloc(gap, sizeof(double));
         for (j = 0; j < gap; j++) {
             result[i][j] = V[i][j];
-            printf("%f", result[i][j]);
+//            printf("%f", result[i][j]);
         }
         // printf("\n");
     }
+
 
 
     return result;
@@ -179,26 +187,34 @@ double ** createP(double ** a , int n)
         matrix[row] = calloc(n, sizeof(double));
     }
 
-    for(row=0; row < n; row++){
-        for(col=0; col< n; col++){
-            if(row == col){
-                if(row == i || row == j){
-                    matrix[row][col] = c;
-                }
-                else{
-                    matrix[row][col] = 1;
-                }
-            }
-            else{
-                if(row == i && col == j)
-                    matrix[row][col] = s;
-                else if(row == j && col == i)
-                    matrix[row][col] = -1*s;
-                else
-                    matrix[row][col] = 0;
-            }
-        }
+    for(row = 0; row < n; row ++){
+        matrix[row][row] = 1;
     }
+    matrix[i][i] = c;
+    matrix[j][j] = c;
+    matrix[i][j] = s;
+    matrix[j][i] = -s;
+
+//    for(row=0; row < n; row++){
+//        for(col=0; col< n; col++){
+//            if(row == col){
+//                if(row == i || row == j){
+//                    matrix[row][col] = c;
+//                }
+//                else{
+//                    matrix[row][col] = 1;
+//                }
+//            }
+//            else{
+//                if(row == i && col == j)
+//                    matrix[row][col] = s;
+//                else if(row == j && col == i)
+//                    matrix[row][col] = -1*s;
+//                else
+//                    matrix[row][col] = 0;
+//            }
+//        }
+//    }
 
     return matrix;
 
@@ -223,7 +239,7 @@ int * findLargestValue(double ** a , int n)
 
 double* getCandS(double ** a, int n)
 {
-    int *iandj = findLargestValue(a, n);
+    int * iandj = findLargestValue(a, n);
     double *results;
     int i = iandj[0];
     int j = iandj[1];
@@ -244,6 +260,7 @@ double* getCandS(double ** a, int n)
     results = calloc(2, sizeof(double));
     results[0] = c;
     results[1] = s;
+
     return results;
 }
 int compare(const void * a, const void * b)
@@ -274,7 +291,7 @@ int eigenGap(double * eigenValues , int n)
         }
     }
 
-    return index;
+    return index+1;
 }
 
 
