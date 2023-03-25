@@ -14,19 +14,40 @@ double ** jacobi(double ** L, int n)
     int gap;
     int rotations=0;
     double ** result;
+    double ** newL;
     double epsilon = 0.00001;
+    double offset = getOff(L, n);
     double ** V = createP(L, n);
     double * eigenValues = malloc(n* sizeof(double));
 
-    while(getOff(L, n) > epsilon && rotations < 100){
+    while(offset > epsilon && rotations < 100){
+
         L = transform(L, n);
+        offset = offset  - getOff(L, n);
+        printf("\n");
+        for (i = 0; i < n; i++)
+        {
+            printf("[");
+            for (j = 0; j < n; j++)
+                printf(" %.4f ", L[i][j]);
+            printf("]\n");
+        }
         rotations++;
         V = mult(V, createP(L, n), n);
     }
 
+//    for (i = 0; i < n; i++)
+//    {
+//        printf("[");
+//        for (j = 0; j < n; j++)
+//            printf(" %.6f ", L[i][j]);
+//        printf("]\n");
+//    }
+
+
     for(j = 0; j < n; j++){
         eigenValues[j] = L[j][j];
-        printf("%f , ", eigenValues[j]);
+        // printf("%f , ", eigenValues[j]);
     }
 
     gap = eigenGap(eigenValues, n);
@@ -37,7 +58,7 @@ double ** jacobi(double ** L, int n)
             result[i][j] = V[i][j];
             printf("%f", result[i][j]);
         }
-        printf("\n");
+        // printf("\n");
     }
 
 
@@ -71,13 +92,21 @@ double** transform(double ** a , int n)
         newA[row] = calloc(n, sizeof(double));
     }
 
+    for(row=0;row<n;row++) {
+        for (col = 0; col < n; col++) {
+            newA[row][col] = a[row][col];
+        }
+    }
+
+
+
     for (k = 0; k < n; k++)
     {
-        newA[k][i] = c*a[k][i] - s*a[k][j];
-        newA[i][k] = c * a[k][j] - s * a[k][i];
+        newA[k][i] = (c*a[k][i]) - (s*a[k][j]);
+        newA[i][k] = (c * a[k][i]) - (s * a[k][j]);
 
-        newA[k][j] = c*a[k][i] + s*a[k][j];
-        newA[j][k] = c * a[k][j] + s * a[k][i];
+        newA[k][j] = (c*a[k][i]) + (s*a[k][j]);
+        newA[j][k] = (c * a[k][i]) + (s * a[k][j]);
     }
 
     newA[i][j] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
@@ -89,9 +118,11 @@ double** transform(double ** a , int n)
 //        for(col=0; col< n; col++){
 //            if(row != i && row != j && col == i){
 //                newA[row][i] = c*a[row][i] - s*a[row][j];
+//                newA[i][row] = c*a[row][i] - s*a[row][j];
 //            }
 //            else if(row != i && row != j && col == j) {
 //                newA[row][j] = c * a[row][j] + s * a[row][i];
+//                newA[j][row] = c * a[row][j] + s * a[row][i];
 //            }
 //            else if(row == col && row == i){
 //                newA[i][i] = c*c*a[i][i] + s*s*a[j][j] - 2*c*s*a[i][j];
@@ -206,8 +237,8 @@ double* getCandS(double ** a, int n)
     else
         sign = -1;
     t = sign / (fabs(theta) + sqrt(theta * theta + 1));
-    c = 1 / (sqrt(t * t + 1));
-    s = t * c;
+    c = 1 / (sqrt((t * t) + 1));
+    s = (t * c);
     results = calloc(2, sizeof(double));
     results[0] = c;
     results[1] = s;
