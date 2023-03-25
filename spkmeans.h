@@ -23,3 +23,4 @@ double ** ddg(Vector *, int);
 double ** wam(Vector *, int);
 double ** gl(Vector *, int);
 double ** jacobi(double **, int);
+Vector * spk(Vector *, int);

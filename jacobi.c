@@ -6,7 +6,7 @@ int eigenGap(double * );
 double** transform(double **);
 int* findLargestValue(double ** );
 double ** mult(double **, double **);
-int N; // size of the matrix jacobi gets (so we don't have to pass it to every function)
+int N;
 
 double ** jacobi(double ** L, int n)
 {
@@ -42,7 +42,7 @@ double ** jacobi(double ** L, int n)
     return result;
 }
 
-double getOff(double ** a) // y
+double getOff(double ** a)
 {
     double sum = 0;
     int i, j;
@@ -54,7 +54,7 @@ double getOff(double ** a) // y
     return sum;
 }
 
-double** transform(double ** a) // s
+double** transform(double ** a)
 {
     int row=0,col=0;
     int * iandj = findLargestValue(a);
@@ -95,7 +95,7 @@ double** transform(double ** a) // s
 
 }
 
-double ** mult(double ** a, double ** b) // y
+double ** mult(double ** a, double ** b)
 {
     double ** result = calloc(N , sizeof (double *));
     int i, j, k;
@@ -113,7 +113,7 @@ double ** mult(double ** a, double ** b) // y
     return result;
 }
 
-double ** createP(double ** a) // s
+double ** createP(double ** a)
 {
     int row;
     int col;
@@ -153,7 +153,7 @@ double ** createP(double ** a) // s
 
 }
 
-int * findLargestValue(double ** a) // y
+int * findLargestValue(double ** a)
 {
     double max = 0;
     int * indexes = calloc(2, sizeof (int));
@@ -170,7 +170,7 @@ int * findLargestValue(double ** a) // y
     return indexes;
 }
 
-int* getCandS(double ** a) // s
+int* getCandS(double ** a)
 {
     int *iandj = findLargestValue(a);
     int i = iandj[0];
@@ -207,7 +207,7 @@ int compare(const void * a, const void * b)
         return 1;
 }
 
-int eigenGap(double * eigenValues) // y
+int eigenGap(double * eigenValues) 
 {
     double max = 0;
     int index, i = 0;

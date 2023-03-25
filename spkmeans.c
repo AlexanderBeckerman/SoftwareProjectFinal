@@ -51,9 +51,19 @@ int main(int argc, char *argv[]) {
 
 
     fclose(file);
-    printf("Hello, World!\n");
-    //wam(head_vec ,numpoints);
-    //ddg(numpoints ,head_vec);
-    gl(head_vec, numpoints);
+    if (strcmp(command, "spk") == 0)
+        spk(head_vec, numpoints);
+    else if (strcmp(command, "wam") == 0)
+        wam(head_vec, numpoints);
+    else if (strcmp(command, "ddg") == 0)
+        ddg(head_vec, numpoints);
+    else if (strcmp(command, "gl") == 0)
+        gl(head_vec, numpoints);
+    else if (strcmp(command, "jacobi") == 0)
+        jacobi(gl(head_vec, numpoints), numpoints);
+    else {
+        printf("--- Unkonown Command ---");
+        return -1;
+    }
     return 0;
 }

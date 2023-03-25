@@ -1,8 +1,11 @@
-build: spkmeans.o wam.c ddg.c gl.o jacobi.o spkmeans.h
-	gcc -o spkmeans spkmeans.o wam.c ddg.c gl.o jacobi.o
+build: spkmeans.o spk.o wam.o ddg.o gl.o jacobi.o spkmeans.h
+	gcc -o spkmeans spkmeans.o wam.o ddg.o gl.o jacobi.o
 
 main.o: spkmeans.c
 	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm spkmeans.c
+
+spk.o: spk.c
+	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm spk.c
 
 wam.o: wam.c
 	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm wam.c
