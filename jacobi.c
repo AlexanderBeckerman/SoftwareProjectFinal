@@ -1,7 +1,7 @@
 #include "spkmeans.h"
 double getOff(double **);
 double ** createP(double **);
-int* getCandS(double **);
+double* getCandS(double **);
 int eigenGap(double * );
 double** transform(double **);
 int* findLargestValue(double ** );
@@ -10,7 +10,6 @@ int N;
 
 double ** jacobi(double ** L, int n)
 {
-    N = n;
     int j;
     int i;
     int gap;
@@ -19,6 +18,7 @@ double ** jacobi(double ** L, int n)
     double epsilon = 0.00001;
     double ** V = createP(L);
     double * eigenValues = malloc(n* sizeof(double));
+    N = n;
 
     while(getOff(L) > epsilon || rotations < 100){
         L = transform(L);
@@ -120,14 +120,15 @@ double ** createP(double ** a)
     int * iandj = findLargestValue(a);
     int i = iandj[0];
     int j = iandj[1];
-    int* cands = getCandS(a);
+    double* cands = getCandS(a);
     double c = cands[0];
     double s = cands[1];
-
     double ** matrix = calloc(N, sizeof(double*));
+
     for(row=0;row<N;row++){
         matrix[i] = calloc(N, sizeof(double*));
     }
+    
     for(row=0; row < N; row++){
         for(col=0; col< N; col++){
             if(row == col){
@@ -170,9 +171,10 @@ int * findLargestValue(double ** a)
     return indexes;
 }
 
-int* getCandS(double ** a)
+double* getCandS(double ** a)
 {
     int *iandj = findLargestValue(a);
+    double *results;
     int i = iandj[0];
     int j = iandj[1];
     double aii = a[i][i];
@@ -189,7 +191,7 @@ int* getCandS(double ** a)
     t = sign / (fabs(theta) + sqrt(theta * theta + 1));
     c = 1 / (sqrt(t * t + 1));
     s = t * c;
-    int *results = calloc(2, sizeof(double));
+    results = calloc(2, sizeof(double));
     results[0] = c;
     results[1] = s;
     return results;
