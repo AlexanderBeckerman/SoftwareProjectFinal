@@ -18,7 +18,7 @@ double ** jacobi(double ** L, int n)
     double ** V = createP(L, n);
     double * eigenValues = malloc(n* sizeof(double));
 
-    while(getOff(L, n) > epsilon || rotations < 100){
+    while(getOff(L, n) > epsilon && rotations < 100){
         L = transform(L, n);
         rotations++;
         V = mult(V, createP(L, n), n);
@@ -26,7 +26,7 @@ double ** jacobi(double ** L, int n)
 
     for(j = 0; j < n; j++){
         eigenValues[j] = L[j][j];
-        printf("%f", eigenValues[j]);
+        printf("%f , ", eigenValues[j]);
     }
 
     gap = eigenGap(eigenValues, n);
@@ -59,6 +59,7 @@ double getOff(double ** a , int n)
 double** transform(double ** a , int n)
 {
     int row=0,col=0;
+    int k = 0;
     int * iandj = findLargestValue(a, n);
     int i=iandj[0];
     int j=iandj[1];
@@ -67,31 +68,45 @@ double** transform(double ** a , int n)
     double s = cands[1];
     double ** newA = calloc(n, sizeof(double*));
     for(row=0;row<n;row++){
-        newA[row] = calloc(n, sizeof(double*));
+        newA[row] = calloc(n, sizeof(double));
     }
-    for(row=0;row<n;row++){
-        for(col=0; col< n; col++){
-            if(row != i && row != j && col == i){
-                newA[row][i] = c*a[row][i] - s*a[row][j];
-            }
-            else if(row != i && row != j && col == j){
-                newA[row][j] = c*a[row][j] + s*a[row][i];
-            }
-            else if(row == col && row == i){
-                newA[i][i] = c*c*a[i][i] + s*s*a[j][j] - 2*c*s*a[i][j];
-            }
-            else if(row == col && row == j){
-                newA[j][j] = s*s*a[i][i] + c*c*a[j][j] + 2*c*s*a[i][j];
-            }
-            else if(row == i && col == j){
-                newA[i][j] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
-            }
-            else{
-                newA[row][col] = a[row][col];
-            }
 
-        }
+    for (k = 0; k < n; k++)
+    {
+        newA[k][i] = c*a[k][i] - s*a[k][j];
+        newA[i][k] = c * a[k][j] - s * a[k][i];
+
+        newA[k][j] = c*a[k][i] + s*a[k][j];
+        newA[j][k] = c * a[k][j] + s * a[k][i];
     }
+
+    newA[i][j] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
+    newA[i][i] = c*c*a[i][i] + s*s*a[j][j] - 2*c*s*a[i][j];
+    newA[j][j] = s*s*a[i][i] + c*c*a[j][j] + 2*c*s*a[i][j];
+    newA[j][i] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
+
+//    for(row=0;row<n;row++){
+//        for(col=0; col< n; col++){
+//            if(row != i && row != j && col == i){
+//                newA[row][i] = c*a[row][i] - s*a[row][j];
+//            }
+//            else if(row != i && row != j && col == j) {
+//                newA[row][j] = c * a[row][j] + s * a[row][i];
+//            }
+//            else if(row == col && row == i){
+//                newA[i][i] = c*c*a[i][i] + s*s*a[j][j] - 2*c*s*a[i][j];
+//            }
+//            else if(row == col && row == j){
+//                newA[j][j] = s*s*a[i][i] + c*c*a[j][j] + 2*c*s*a[i][j];
+//            }
+//            else if(row == i && col == j){
+//                newA[i][j] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
+//            }
+//            else{
+//                newA[row][col] = a[row][col];
+//            }
+//        }
+//    }
 
     return newA;
 
