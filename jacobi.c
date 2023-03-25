@@ -60,7 +60,7 @@ double** transform(double ** a)
     int * iandj = findLargestValue(a);
     int i=iandj[0];
     int j=iandj[1];
-    int* cands = getCandS(a);
+    double* cands = getCandS(a);
     double c = cands[0];
     double s = cands[1];
     double ** newA = calloc(N, sizeof(double*));
@@ -128,7 +128,7 @@ double ** createP(double ** a)
     for(row=0;row<N;row++){
         matrix[i] = calloc(N, sizeof(double*));
     }
-    
+
     for(row=0; row < N; row++){
         for(col=0; col< N; col++){
             if(row == col){
