@@ -1,7 +1,7 @@
 #include "spkmeans.h"
 double getOff(double ** ,int);
 double ** createP(double ** ,int);
-double* getCandS(double **);
+double* getCandS(double **, int);
 int eigenGap(double *  ,int);
 double** transform(double ** ,int);
 int* findLargestValue(double **  ,int);
@@ -15,27 +15,31 @@ double ** jacobi(double ** L, int n)
     int rotations=0;
     double ** result;
     double epsilon = 0.00001;
-    double ** V = createP(L);
+    double ** V = createP(L, n);
     double * eigenValues = malloc(n* sizeof(double));
 
-    while(getOff(L) > epsilon || rotations < 100){
-        L = transform(L);
+    while(getOff(L, n) > epsilon || rotations < 100){
+        L = transform(L, n);
         rotations++;
-        V = mult(V, createP(L));
+        V = mult(V, createP(L, n), n);
     }
 
     for(j = 0; j < n; j++){
         eigenValues[j] = L[j][j];
+        printf("%f", eigenValues[j]);
     }
 
-    gap = eigenGap(eigenValues);
+    gap = eigenGap(eigenValues, n);
     result = calloc(n, sizeof(double *));
     for (i = 0; i < n; i++){
         result[i] = calloc(gap, sizeof(double));
         for (j = 0; j < gap; j++) {
             result[i][j] = V[i][j];
+            printf("%f", result[i][j]);
         }
+        printf("\n");
     }
+
 
     return result;
 }
@@ -55,10 +59,10 @@ double getOff(double ** a , int n)
 double** transform(double ** a , int n)
 {
     int row=0,col=0;
-    int * iandj = findLargestValue(a);
+    int * iandj = findLargestValue(a, n);
     int i=iandj[0];
     int j=iandj[1];
-    double* cands = getCandS(a);
+    double* cands = getCandS(a, n);
     double c = cands[0];
     double s = cands[1];
     double ** newA = calloc(n, sizeof(double*));
@@ -99,9 +103,9 @@ double ** mult(double ** a, double ** b , int n)
     int i, j, k;
     for (i = 0; i < n; i++) {
         result[i] = calloc(n , sizeof (double));
-        for (j = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
             int sum = 0;
-            for (k = 0; i < n; i++) {
+            for (k = 0; k < n; k++) {
                 sum += a[i][k] * b[k][j];
             }
             result[i][j] = sum;
@@ -115,16 +119,16 @@ double ** createP(double ** a , int n)
 {
     int row;
     int col;
-    int * iandj = findLargestValue(a);
+    int * iandj = findLargestValue(a, n);
     int i = iandj[0];
     int j = iandj[1];
-    double* cands = getCandS(a);
+    double* cands = getCandS(a, n);
     double c = cands[0];
     double s = cands[1];
     double ** matrix = calloc(n, sizeof(double*));
 
     for(row=0;row<n;row++){
-        matrix[i] = calloc(n, sizeof(double*));
+        matrix[row] = calloc(n, sizeof(double));
     }
 
     for(row=0; row < n; row++){
@@ -169,9 +173,9 @@ int * findLargestValue(double ** a , int n)
     return indexes;
 }
 
-double* getCandS(double ** a)
+double* getCandS(double ** a, int n)
 {
-    int *iandj = findLargestValue(a);
+    int *iandj = findLargestValue(a, n);
     double *results;
     int i = iandj[0];
     int j = iandj[1];
