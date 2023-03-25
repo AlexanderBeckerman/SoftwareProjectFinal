@@ -1,26 +1,60 @@
 #include "spkmeans.h"
-
+double getOff(double **);
+double ** createP(double **);
 int* getCandS(double **);
+int eigenGap(double * );
+double** transform(double **);
 int* findLargestValue(double ** );
-int N; // size of the matrix jacobi gets (so we dont have to pass it to every function)
+double ** mult(double **, double **);
+int N; // size of the matrix jacobi gets (so we don't have to pass it to every function)
 
-double ** jacobi(Vector * points, int n)
+double ** jacobi(double ** L, int n)
 {
     N = n;
-    double epsilon;
+    int j;
+    int i;
+    int gap;
+    int rotations=0;
+    double ** result;
+    double epsilon = 0.00001;
+    double ** V = createP(L);
+    double * eigenValues = malloc(n* sizeof(double));
+
+    while(getOff(L) > epsilon || rotations < 100){
+        L = transform(L);
+        rotations++;
+        V = mult(V, createP(L));
+    }
+
+    for(j = 0; j < n; j++){
+        eigenValues[j] = L[j][j];
+    }
+
+    gap = eigenGap(eigenValues);
+    result = calloc(n, sizeof(double *));
+    for (i = 0; i < n; i++){
+        result[i] = calloc(gap, sizeof(double));
+        for (j = 0; j < gap; j++) {
+            result[i][j] = V[i][j];
+        }
+    }
+
+    return result;
 }
 
 double getOff(double ** a) // y
 {
     double sum = 0;
     int i, j;
-    for (i = 0; i < N; i++)
-        for (j = 0; j < N; j++)
-            sum += i == j ? 0 : pow(a[i][j] , 2);
+    for (i = 0; i < N; i++){
+        for (j = 0; j < N; j++) {
+            sum += i == j ? 0 : pow(a[i][j], 2);
+        }
+    }
     return sum;
 }
 
-double** transform(double ** a, double ** p) // s
+double** transform(double ** a) // s
 {
     int row=0,col=0;
     int * iandj = findLargestValue(a);
@@ -79,10 +113,13 @@ double ** mult(double ** a, double ** b) // y
     return result;
 }
 
-double ** createP(double ** a, int i, int j) // s
+double ** createP(double ** a) // s
 {
     int row;
     int col;
+    int * iandj = findLargestValue(a);
+    int i = iandj[0];
+    int j = iandj[1];
     int* cands = getCandS(a);
     double c = cands[0];
     double s = cands[1];
