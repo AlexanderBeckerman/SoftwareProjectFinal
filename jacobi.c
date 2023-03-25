@@ -1,12 +1,11 @@
 #include "spkmeans.h"
-double getOff(double **);
-double ** createP(double **);
+double getOff(double ** ,int);
+double ** createP(double ** ,int);
 double* getCandS(double **);
-int eigenGap(double * );
-double** transform(double **);
-int* findLargestValue(double ** );
-double ** mult(double **, double **);
-int N;
+int eigenGap(double *  ,int);
+double** transform(double ** ,int);
+int* findLargestValue(double **  ,int);
+double ** mult(double **, double ** ,int);
 
 double ** jacobi(double ** L, int n)
 {
@@ -18,7 +17,6 @@ double ** jacobi(double ** L, int n)
     double epsilon = 0.00001;
     double ** V = createP(L);
     double * eigenValues = malloc(n* sizeof(double));
-    N = n;
 
     while(getOff(L) > epsilon || rotations < 100){
         L = transform(L);
@@ -42,19 +40,19 @@ double ** jacobi(double ** L, int n)
     return result;
 }
 
-double getOff(double ** a)
+double getOff(double ** a , int n)
 {
     double sum = 0;
     int i, j;
-    for (i = 0; i < N; i++){
-        for (j = 0; j < N; j++) {
+    for (i = 0; i < n; i++){
+        for (j = 0; j < n; j++) {
             sum += i == j ? 0 : pow(a[i][j], 2);
         }
     }
     return sum;
 }
 
-double** transform(double ** a)
+double** transform(double ** a , int n)
 {
     int row=0,col=0;
     int * iandj = findLargestValue(a);
@@ -63,12 +61,12 @@ double** transform(double ** a)
     double* cands = getCandS(a);
     double c = cands[0];
     double s = cands[1];
-    double ** newA = calloc(N, sizeof(double*));
-    for(row=0;row<N;row++){
-        newA[row] = calloc(N, sizeof(double*));
+    double ** newA = calloc(n, sizeof(double*));
+    for(row=0;row<n;row++){
+        newA[row] = calloc(n, sizeof(double*));
     }
-    for(row=0;row<N;row++){
-        for(col=0; col< N; col++){
+    for(row=0;row<n;row++){
+        for(col=0; col< n; col++){
             if(row != i && row != j && col == i){
                 newA[row][i] = c*a[row][i] - s*a[row][j];
             }
@@ -95,15 +93,15 @@ double** transform(double ** a)
 
 }
 
-double ** mult(double ** a, double ** b)
+double ** mult(double ** a, double ** b , int n)
 {
-    double ** result = calloc(N , sizeof (double *));
+    double ** result = calloc(n , sizeof (double *));
     int i, j, k;
-    for (i = 0; i < N; i++) {
-        result[i] = calloc(N , sizeof (double));
-        for (j = 0; i < N; i++) {
+    for (i = 0; i < n; i++) {
+        result[i] = calloc(n , sizeof (double));
+        for (j = 0; i < n; i++) {
             int sum = 0;
-            for (k = 0; i < N; i++) {
+            for (k = 0; i < n; i++) {
                 sum += a[i][k] * b[k][j];
             }
             result[i][j] = sum;
@@ -113,7 +111,7 @@ double ** mult(double ** a, double ** b)
     return result;
 }
 
-double ** createP(double ** a)
+double ** createP(double ** a , int n)
 {
     int row;
     int col;
@@ -123,14 +121,14 @@ double ** createP(double ** a)
     double* cands = getCandS(a);
     double c = cands[0];
     double s = cands[1];
-    double ** matrix = calloc(N, sizeof(double*));
+    double ** matrix = calloc(n, sizeof(double*));
 
-    for(row=0;row<N;row++){
-        matrix[i] = calloc(N, sizeof(double*));
+    for(row=0;row<n;row++){
+        matrix[i] = calloc(n, sizeof(double*));
     }
 
-    for(row=0; row < N; row++){
-        for(col=0; col< N; col++){
+    for(row=0; row < n; row++){
+        for(col=0; col< n; col++){
             if(row == col){
                 if(row == i || row == j){
                     matrix[row][col] = c;
@@ -154,13 +152,13 @@ double ** createP(double ** a)
 
 }
 
-int * findLargestValue(double ** a)
+int * findLargestValue(double ** a , int n)
 {
     double max = 0;
     int * indexes = calloc(2, sizeof (int));
     int i, j;
-    for (i = 0; i < N; i++)
-        for (j = 0; j < N; j++)
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
             if (i != j && max < fabs(a[i][j]))
             {
                 max = fabs(a[i][j]);
@@ -209,12 +207,12 @@ int compare(const void * a, const void * b)
         return 1;
 }
 
-int eigenGap(double * eigenValues)
+int eigenGap(double * eigenValues , int n)
 {
     double max = 0;
     int index, i = 0;
-    qsort(eigenValues, N, sizeof (double), compare);
-    for (i = 0; i < N / 2 ; i++)
+    qsort(eigenValues, n, sizeof (double), compare);
+    for (i = 0; i < n / 2 ; i++)
     {
         double gap = max < eigenValues[i + 1] - eigenValues[i];
         if (max < gap)

@@ -1,4 +1,4 @@
-build: spkmeans.o spk.o wam.o ddg.o gl.o jacobi.o spkmeans.h
+build: spkmeans.h spkmeans.o spk.o wam.o ddg.o gl.o jacobi.o
 	gcc -o spkmeans spkmeans.o wam.o ddg.o gl.o jacobi.o
 
 main.o: spkmeans.c
