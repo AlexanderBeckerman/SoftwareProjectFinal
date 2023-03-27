@@ -2,16 +2,18 @@
 double getOff(double ** ,int);
 double ** createP(double ** ,int);
 double* getCandS(double **, int);
-int eigenGap(double *  ,int);
+int* eigenGap(double *  ,int);
 double** transform(double ** ,int);
 int* findLargestValue(double **  ,int);
 double ** mult(double **, double ** ,int);
-double ** jacobi(double ** L, int n)
+
+double ** jacobi(double ** L, int n, int flag)
 {
     int j;
     int i;
     int gap;
     int rotations=0;
+    int* eigenIndexes;
     double ** result;
     double epsilon = 0.00001;
     double offset = getOff(L, n);
@@ -25,17 +27,7 @@ double ** jacobi(double ** L, int n)
         offsetDiff = offset - getOff(L, n);
         offset = getOff(L, n);
         rotations++;
-
         V = mult(V, createP(L, n), n);
-//        printf("---- V : ----- \n");
-//        for (i = 0; i < n; i++)
-//        {
-//            for (j = 0; j < n; j++)
-//                printf(" %.4f ", V[i][j]);
-//            printf("\n");
-//        }
-//        printf("\n");
-
     }
 
     for(j = 0; j < n; j++){
@@ -43,17 +35,28 @@ double ** jacobi(double ** L, int n)
         printf("%.4f , ", eigenValues[j]);
     }
 
-    gap = eigenGap(eigenValues, n);
+    if (flag == 1)
+    {
+        printf("\n");
+        for (i = 0; i < n; i++)
+        {
+            printf("[");
+            for (j = 0; j < n; j++)
+                printf(" %.4f ", V[i][j]);
+            printf("]\n");
+        }
+        printf("\n");
+        return V;
+    }
+
+    eigenIndexes = eigenGap(eigenValues, n);
+    gap = sizeof (eigenIndexes) / sizeof (eigenValues[0]);
     result = calloc(n, sizeof(double *));
     for (i = 0; i < n; i++){
         result[i] = calloc(gap, sizeof(double));
-        for (j = 0; j < gap; j++) {
-            result[i][j] = V[i][j];
-        }
-
+        for (j = 0; j < gap; j++)
+            result[i][j] = V[i][eigenIndexes[j]];
     }
-
-
 
     return result;
 }
@@ -208,22 +211,34 @@ int compare(const void * a, const void * b)
         return 1;
 }
 
-int eigenGap(double * eigenValues , int n)
+int* eigenGap(double * eigenValues , int n)
 {
     double max = 0;
-    int index, i = 0;
-    qsort(eigenValues, n, sizeof (double), compare);
+    int index, i, j = 0;
+    double * eigenCopy = calloc(n , sizeof (double));
+    int * indexes;
+    for (i = 0; i < n; ++i)
+        eigenCopy[i] = eigenValues[i];
+    qsort(eigenCopy, n, sizeof (double), compare);
     for (i = 0; i < n / 2 ; i++)
     {
-        double gap = max < eigenValues[i + 1] - eigenValues[i];
+        double gap = max < eigenCopy[i + 1] - eigenCopy[i];
         if (max < gap)
         {
             max = gap;
             index = i;
         }
     }
+    index++;
 
-    return index+1;
+    indexes = calloc(index, sizeof (int));
+    for (i = 0; i < index; i++)
+        for (j = 0; j < n; j++)
+            if (eigenValues[j] == eigenCopy[i])
+                indexes[i] = j;
+
+
+    return indexes;
 }
 
 

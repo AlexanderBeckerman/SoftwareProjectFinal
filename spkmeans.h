@@ -22,5 +22,5 @@ typedef struct cord Cord;
 double ** ddg(Vector *, int);
 double ** wam(Vector *, int);
 double ** gl(Vector *, int);
-double ** jacobi(double **, int);
+double ** jacobi(double **, int, int);
 Vector * spk(Vector *, int);
