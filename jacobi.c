@@ -50,13 +50,23 @@ double ** jacobi(double ** L, int n, int flag)
     }
 
     eigenIndexes = eigenGap(eigenValues, n);
-    gap = sizeof (eigenIndexes) / sizeof (eigenValues[0]);
+    gap = sizeof(eigenIndexes) / sizeof(eigenIndexes[0]);
     result = calloc(n, sizeof(double *));
     for (i = 0; i < n; i++){
         result[i] = calloc(gap, sizeof(double));
         for (j = 0; j < gap; j++)
             result[i][j] = V[i][eigenIndexes[j]];
     }
+
+    printf("\n");
+    for (i = 0; i < n; i++)
+    {
+        printf("[");
+        for (j = 0; j < gap; j++)
+            printf(" %.4f ", result[i][j]);
+        printf("]\n");
+    }
+    printf("\n");
 
     return result;
 }
@@ -222,7 +232,7 @@ int* eigenGap(double * eigenValues , int n)
     qsort(eigenCopy, n, sizeof (double), compare);
     for (i = 0; i < n / 2 ; i++)
     {
-        double gap = max < eigenCopy[i + 1] - eigenCopy[i];
+        double gap = fabs(eigenCopy[i + 1] - eigenCopy[i]);
         if (max < gap)
         {
             max = gap;
