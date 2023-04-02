@@ -24,7 +24,7 @@ void spk_module(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    pythonModule(filename, "spk", k);
+    pythonModule(filename, "spk");
 }
 
 void ddg_module(PyObject *self, PyObject *args)
