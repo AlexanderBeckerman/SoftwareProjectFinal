@@ -95,9 +95,9 @@ int main(int argc, char *argv[]) {
     {
         for (j = 0; j < numpoints; j++) {
             if(j != numpoints-1)
-                printf(" %.4f,", result_mat[i][j]);
+                printf("%.4f,", result_mat[i][j]);
             else
-                printf(" %.4f", result_mat[i][j]);
+                printf("%.4f", result_mat[i][j]);
         }
         printf("\n");
     }
