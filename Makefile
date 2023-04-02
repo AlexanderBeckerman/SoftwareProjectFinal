@@ -1,5 +1,5 @@
-build: spkmeans.h spkmeans.o spk.o wam.o ddg.o gl.o jacobi.o spkmeansmodule.o
-	gcc -o spkmeans spkmeans.o wam.o ddg.o gl.o jacobi.o spkmeansmodule.o
+build: spkmeans.h spkmeans.o spk.o wam.o ddg.o gl.o jacobi.o
+	gcc -o spkmeans spkmeans.o wam.o ddg.o gl.o jacobi.o 
 
 main.o: spkmeans.c
 	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm spkmeans.c
@@ -18,6 +18,3 @@ gl.o: gl.c
 
 jacobi.o: jacobi.c
 	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm jacobi.c
-
-spkmeansmodule.o: spkmeansmodule.c
-	gcc -c -ansi -Wall -Wextra -Werror -pedantic-errors -lm spkmeansmodule.c
