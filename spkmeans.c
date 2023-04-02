@@ -108,13 +108,14 @@ void pythonModule(char* file, char* command)
     main(3, args);
 }
 
-Vector* spkModule(char* filename, int k)
+double ** spkModule(char* filename, int k)
 {
 
     Vector *head_vec;
     Vector *curr_vec;
     Cord *head_cord;
     Cord *curr_cord;
+    double ** p;
     double n;
     int numpoints=0;
     char c;
@@ -149,6 +150,6 @@ Vector* spkModule(char* filename, int k)
         curr_cord->next = NULL;
     }
 
-    Vector * p = spk(head_vec, numpoints, k);
+    p = spk(head_vec, numpoints, k);
     return p;
 }

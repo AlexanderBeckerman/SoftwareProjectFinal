@@ -48,7 +48,7 @@ def main():
                     print(centroids_indexes[i], end=",")
                 else:
                     print(centroids_indexes[i])
-            s = fit(int(iter), float(eps), int(dim), centroids, vectors)
+            s = kmean(int(iter), float(eps), int(dim), centroids, vectors)
 
 
 def kmeans_pp(vectors, k):

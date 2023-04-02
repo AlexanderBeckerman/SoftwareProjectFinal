@@ -19,14 +19,28 @@ static char* getFile(PyObject *self, PyObject *args)
 static PyObject* spk_module(PyObject *self, PyObject *args)
 {
     char* filename;
-    int k;
-    Vector * points;
+    int k, i, j, numpoints, dim;
+    PyObject *listVectors;
+    PyObject *vector;
+    double ** points;
     if(!PyArg_ParseTuple(args, "si", &filename, &k)) {
         return;
     }
 
     points = spkModule(filename, k);
 
+    numpoints = sizeof(points) / sizeof(points[0]);
+    dim = sizeof(points[0]) / sizeof(points[0][0]);
+
+    listVectors = PyList_New(numpoints);
+    for (i = 0; i != numpoints; ++i) {
+        PyList_SET_ITEM(listVectors, i, PyList_New(dim));
+        for (j = 0; j != dim; ++j) {
+            PyList_SET_ITEM(PyList_GetItem(listVectors, i), j, PyFloat_AsDouble(points[i][j]));
+        }
+    }
+
+    return listVectors;
 }
 
 static void ddg_module(PyObject *self, PyObject *args)
