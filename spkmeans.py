@@ -29,26 +29,26 @@ def main():
     numPoints = vectors.shape[0]
     vectors = vectors.tolist()
 
-    if goal != "jacobi":
-        if goal == "wam":
-            wam(file)
-        elif goal == "ddg":
-            ddg(file)
-        elif goal == "gl":
-            gl(file)
-        elif goal == "jacobi":
-            jacobi(file)
-        elif goal == "spk":
-            vectors = spk(file, k)
-            k = len(vectors[0]) #each vectors is a point in R^k
-            centroids, centroids_indexes = kmeans_pp(vectors, k)
-            dim = len(centroids[0])
-            for i in range(len(centroids_indexes)):
-                if (i != len(centroids_indexes) - 1):
-                    print(centroids_indexes[i], end=",")
-                else:
-                    print(centroids_indexes[i])
-            s = kmeans(300, 0, dim, centroids, vectors)
+
+    if goal == "wam":
+        wam(file)
+    elif goal == "ddg":
+        ddg(file)
+    elif goal == "gl":
+        gl(file)
+    elif goal == "jacobi":
+        jacobi(file)
+    elif goal == "spk":
+        vectors = spk(file, k)
+        k = len(vectors[0]) #each vectors is a point in R^k
+        centroids, centroids_indexes = kmeans_pp(vectors, k)
+        dim = len(centroids[0])
+        for i in range(len(centroids_indexes)):
+            if (i != len(centroids_indexes) - 1):
+                print(centroids_indexes[i], end=",")
+            else:
+                print(centroids_indexes[i])
+        s = kmeans(300, 0, dim, centroids, vectors)
 
 
 def kmeans_pp(vectors, k):
