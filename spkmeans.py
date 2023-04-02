@@ -31,15 +31,15 @@ def main():
 
     if goal != "jacobi":
         if goal == "wam":
-            wam(file, "wam")
+            wam(file)
         elif goal == "ddg":
-            ddg(file, "ddg")
+            ddg(file)
         elif goal == "gl":
-            gl(file, "gl")
+            gl(file)
         elif goal == "jacobi":
-            jacobi(file, "jacobi")
+            jacobi(file)
         elif goal == "spk":
-            vectors = spk(file, "spk", k)
+            vectors = spk(file, k)
             k = len(vectors[0]) #each vectors is a point in R^k
             centroids, centroids_indexes = kmeans_pp(vectors, k)
             dim = len(centroids[0])

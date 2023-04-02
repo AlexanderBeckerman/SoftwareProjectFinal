@@ -21,7 +21,7 @@ static void spk_module(PyObject *self, PyObject *args)
     char* filename;
     int k;
     if(!PyArg_ParseTuple(args, "si", &filename, &k)) {
-        return NULL;
+        return;
     }
 
     pythonModule(filename, "spk");
