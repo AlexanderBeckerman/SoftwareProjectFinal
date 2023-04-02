@@ -16,15 +16,17 @@ static char* getFile(PyObject *self, PyObject *args)
     return filename;
 }
 
-static void spk_module(PyObject *self, PyObject *args)
+static PyObject* spk_module(PyObject *self, PyObject *args)
 {
     char* filename;
     int k;
+    Vector * points;
     if(!PyArg_ParseTuple(args, "si", &filename, &k)) {
         return;
     }
 
-    pythonModule(filename, "spk");
+    points = spkModule(filename, k);
+
 }
 
 static void ddg_module(PyObject *self, PyObject *args)

@@ -25,4 +25,4 @@ double ** gl(Vector *, int);
 double ** jacobi(double **, int, int, int);
 Vector * spk(Vector *, int, int);
 void pythonModule(char*, char*);
-void spkModule(char*, int);
+Vector * spkModule(char*, int);
