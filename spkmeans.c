@@ -92,12 +92,12 @@ int main(int argc, char *argv[]) {
 
 void pythonModule(char* file, char* command)
 {
-    char ** args = {"", command, file};
+    char * args[3] = {"spkmeans", command, file};
     main(3, args);
 }
 
 void spkModule(char* file, int k)
 {
-    char ** args = {"", "spk", file, k + '0'};
+    char * args[4] = {"spkmeans", "spk", file, k + '0'};
     main(3, args);
 }
