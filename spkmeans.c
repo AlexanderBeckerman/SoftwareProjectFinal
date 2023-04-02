@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 
     fclose(file);
     if (strcmp(command, "spk") == 0)
-        result_mat = spk(head_vec, numpoints, k);
+        spk(head_vec, numpoints, k);
     else if (strcmp(command, "wam") == 0)
         result_mat = wam(head_vec, numpoints);
     else if (strcmp(command, "ddg") == 0)
