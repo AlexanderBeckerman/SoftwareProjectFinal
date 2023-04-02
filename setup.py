@@ -1,6 +1,6 @@
 from setuptools import Extension, setup
 
-module = Extension("spkmeans", sources=['spkmeansmodule.c', 'spkmeans.c', 'spk.c', 'wam.c', 'ddg.c', 'gl.c', 'jacobi.c'])
+module = Extension("spkmeans", sources=['spkmeansmodule.c', 'spkmeans.c', 'spk.c', 'wam.c', 'ddg.c', 'gl.c', 'jacobi.c', 'kmeans.c'])
 
 setup(name='spkmeans',
       version='1.0',

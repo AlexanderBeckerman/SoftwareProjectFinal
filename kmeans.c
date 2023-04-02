@@ -9,7 +9,7 @@ void freeVector(Vector *);
 int isNumber(const char *);
 
 
-void kmeans(int iter, double epsilon, int k, struct vector **py_centroids, struct vector *py_points)
+void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_points)
 {
     struct vector *head_vec;
     struct vector *curr_vec;
@@ -101,7 +101,7 @@ void kmeans(int iter, double epsilon, int k, struct vector **py_centroids, struc
     }
 }
 
-double calcDistance(struct vector * point, struct vector * centroid){
+double calcDistance(Vector * point, Vector * centroid){
     double diff = 0;
     struct cord * pointCords = point->cords;
     struct cord * centroidCords = centroid->cords;
@@ -114,7 +114,7 @@ double calcDistance(struct vector * point, struct vector * centroid){
     return diff;
 }
 
-int assignPoint(struct vector * point, struct vector ** centroids, int k){
+int assignPoint(Vector * point, Vector ** centroids, int k){
     double mindist = -1;
     int i=0;
     int minind = 0;
@@ -133,7 +133,7 @@ int assignPoint(struct vector * point, struct vector ** centroids, int k){
     return minind;
 }
 
-struct vector * addVectors(struct vector * v1, struct vector * v2){
+struct vector * addVectors(Vector * v1, Vector * v2){
     struct vector * res = malloc(sizeof(struct vector));
     struct cord * resCord;
     struct cord * v1Cord;
@@ -157,7 +157,7 @@ struct vector * addVectors(struct vector * v1, struct vector * v2){
     return res;
 }
 
-void freeList(struct vector *list)
+void freeList(Vector *list)
 {
     struct vector * iterator = list;
     struct vector * temp;
@@ -169,7 +169,7 @@ void freeList(struct vector *list)
     }
 }
 
-void freeVector(struct vector *vec)
+void freeVector(Vector *vec)
 {
     struct cord * iterator = vec->cords;
     struct cord * temp;

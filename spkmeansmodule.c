@@ -66,12 +66,84 @@ static void gl_module(PyObject *self, PyObject *args)
     pythonModule(filename, "gl");
 }
 
+static void kmeans_module(PyObject *self, PyObject *args)
+{
+    int iter;
+    double epsilon;
+    PyObject* centList;
+    PyObject* pointList;
+    PyObject* item;
+    double num;
+    int n;
+    int m;
+    int k;
+    int i;
+    int j;
+
+    if(!PyArg_ParseTuple(args, "idiOO", &iter, &epsilon,&m, &centList, &pointList)) {
+        return NULL;
+    }
+
+    n = PyObject_Length(pointList);
+    k = PyObject_Length(centList);
+
+    if (n <= 0 || k <= 0 || m <= 0) {
+        return NULL;
+    }
+
+    struct vector *points = malloc(sizeof (struct vector));
+    struct vector **centroids = calloc(k, sizeof (struct vector));
+    struct vector *pointsIter = points;
+    for (i = 0; i < n; i++) {
+        pointsIter->cords = malloc(sizeof (struct cord));
+        pointsIter->next = NULL;
+        struct cord *cordsIter = pointsIter->cords;
+        for (j = 0; j < m; j++)
+        {
+            item = PyList_GetItem(PyList_GetItem(pointList, i), j);
+            num = PyFloat_AsDouble(item);
+            cordsIter->next = NULL;
+            cordsIter->value = num;
+            if (j != m - 1) {
+                cordsIter->next = malloc(sizeof (struct cord));
+                cordsIter = cordsIter->next;
+            }
+        }
+
+        if (i != n - 1) {
+            pointsIter->next = malloc(sizeof(struct vector));
+            pointsIter = pointsIter->next;
+        }
+
+    }
+
+    for (i = 0; i < k; i++) {
+        centroids[i] = malloc(sizeof (struct vector));
+        centroids[i]->next = NULL;
+        centroids[i]->cords = malloc(sizeof (struct cord));;
+        struct cord *cordsIter = centroids[i]->cords;
+        for (j = 0; j < m; j++)
+        {
+            item = PyList_GetItem(PyList_GetItem(centList, i), j);
+            num = PyFloat_AsDouble(item);
+            cordsIter->next = NULL;
+            cordsIter->value = num;
+            if (j != m - 1) {
+                cordsIter->next = malloc(sizeof (struct cord));
+                cordsIter = cordsIter->next;
+            }
+        }
+    }
+    kmeans(iter, epsilon, k, centroids, points);
+}
+
 static PyMethodDef spkmeansMethods[] = {
         {"spk", spk_module, METH_VARARGS, "The spk algorithm"},
         {"ddg", ddg_module, METH_VARARGS, "The ddg algorithm"},
         {"gl", gl_module, METH_VARARGS, "The gl algorithm"},
         {"wam", wam_module, METH_VARARGS, "The wam algorithm"},
         {"jacobi", jacobi_module, METH_VARARGS, "The jacobi algorithm"},
+        {"kmeans", kmeans_module, METH_VARARGS, "The kmeans algorithm"}
         {NULL, NULL, 0, NULL}
 };
 
