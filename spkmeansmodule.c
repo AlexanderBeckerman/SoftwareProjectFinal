@@ -16,7 +16,7 @@ static char* getFile(PyObject *self, PyObject *args)
     return filename;
 }
 
-void spk_module(PyObject *self, PyObject *args)
+static void spk_module(PyObject *self, PyObject *args)
 {
     char* filename;
     int k;
@@ -27,24 +27,24 @@ void spk_module(PyObject *self, PyObject *args)
     pythonModule(filename, "spk");
 }
 
-void ddg_module(PyObject *self, PyObject *args)
+static void ddg_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "ddg");
 }
 
-void wam_module(PyObject *self, PyObject *args)
+static void wam_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "wam");
 }
-void jacobi_module(PyObject *self, PyObject *args)
+static void jacobi_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "jacobi");
 }
 
-void gl_module(PyObject *self, PyObject *args)
+static void gl_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "gl");
