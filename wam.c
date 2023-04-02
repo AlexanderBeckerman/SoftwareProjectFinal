@@ -1,6 +1,6 @@
 #include "spkmeans.h"
 
-double calcDistance(Vector*,Vector*);
+double calculateDistance(Vector*,Vector*);
 
 double** wam(Vector * head, int numpoints){
     Vector * curr1 = head;
@@ -23,7 +23,7 @@ double** wam(Vector * head, int numpoints){
                 curr2 = curr2->next;
                 continue;
             }
-             distance = calcDistance(curr1, curr2);
+             distance = calculateDistance(curr1, curr2);
              exponent = -1*(distance/2);
             matrix[row][col] = exp(exponent);
             col++;
@@ -38,7 +38,7 @@ double** wam(Vector * head, int numpoints){
     return matrix;
 }
 
-double calcDistance(Vector * point1,  Vector * point2){
+double calculateDistance(Vector * point1,  Vector * point2){
     double diff = 0;
     struct cord * pointCords = point1->cords;
     struct cord * centroidCords = point2->cords;
