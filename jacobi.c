@@ -44,7 +44,7 @@ double ** jacobi(double ** L, int n, int flag, int k)
 
     if (k == -1) {
         eigenIndexes = eigenGap(eigenValues, n);
-        gap = sizeof(*eigenIndexes) / sizeof(int);
+        gap = eigenIndexes[0];
     }
 
     else
@@ -55,7 +55,7 @@ double ** jacobi(double ** L, int n, int flag, int k)
     for (i = 0; i < n; i++) {
         result[i] = calloc(gap, sizeof(double));
         for (j = 0; j < gap; j++)
-            result[i][j] = V[i][eigenIndexes[j]];
+            result[i][j] = V[i][eigenIndexes[j + 1]];
     }
 
     return result;
@@ -231,11 +231,12 @@ int* eigenGap(double * eigenValues , int n)
     }
     index++;
 
-    indexes = calloc(index, sizeof (int));
+    indexes = calloc(index + 1, sizeof (int));
+    indexes[0] = index;
     for (i = 0; i < index; i++)
         for (j = 0; j < n; j++)
             if (eigenValues[j] == eigenCopy[i])
-                indexes[i] = j;
+                indexes[i + 1] = j;
 
 
     return indexes;
