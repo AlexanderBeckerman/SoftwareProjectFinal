@@ -37,6 +37,7 @@ double ** jacobi(double ** L, int n, int flag, int k)
     }
 
     if (flag == 1)
+        printf("\n");
         return V;
 
     if (k == -1) {
