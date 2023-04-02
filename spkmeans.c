@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    for (i = 0; i < n; i++)
+    for (i = 0; i < numpoints; i++)
     {
         printf("[");
         for (j = 0; j < n; j++)
