@@ -36,42 +36,23 @@ double ** jacobi(double ** L, int n, int flag, int k)
     }
 
     if (flag == 1)
-    {
-        printf("\n");
-        for (i = 0; i < n; i++)
-        {
-            printf("[");
-            for (j = 0; j < n; j++)
-                printf(" %.4f ", V[i][j]);
-            printf("]\n");
-        }
-        printf("\n");
         return V;
-    }
 
     if (k == -1) {
         eigenIndexes = eigenGap(eigenValues, n);
         gap = sizeof(eigenIndexes) / sizeof(eigenIndexes[0]);
-        result = calloc(n, sizeof(double *));
-        for (i = 0; i < n; i++) {
-            result[i] = calloc(gap, sizeof(double));
-            for (j = 0; j < gap; j++)
-                result[i][j] = V[i][eigenIndexes[j]];
-        }
     }
 
     else
         gap = k;
 
-    printf("\n");
-    for (i = 0; i < n; i++)
-    {
-        printf("[");
+
+    result = calloc(n, sizeof(double *));
+    for (i = 0; i < n; i++) {
+        result[i] = calloc(gap, sizeof(double));
         for (j = 0; j < gap; j++)
-            printf(" %.4f ", result[i][j]);
-        printf("]\n");
+            result[i][j] = V[i][eigenIndexes[j]];
     }
-    printf("\n");
 
     return result;
 }

@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     int numpoints=0;
     char c;
     double ** jacboi_mat;
+    double ** result_mat;
     struct vector *head_vec;
     struct vector *curr_vec;
     struct cord *head_cord;
@@ -76,19 +77,28 @@ int main(int argc, char *argv[]) {
 
     fclose(file);
     if (strcmp(command, "spk") == 0)
-        spk(head_vec, numpoints, k);
+        result_mat = spk(head_vec, numpoints, k);
     else if (strcmp(command, "wam") == 0)
-        wam(head_vec, numpoints);
+        result_mat = wam(head_vec, numpoints);
     else if (strcmp(command, "ddg") == 0)
-        ddg(head_vec, numpoints);
+        result_mat = ddg(head_vec, numpoints);
     else if (strcmp(command, "gl") == 0)
-        gl(head_vec, numpoints);
+        result_mat = gl(head_vec, numpoints);
     else if (strcmp(command, "jacobi") == 0)
-        jacobi(jacboi_mat, numpoints, 1, -1);
+        result_mat = jacobi(jacboi_mat, numpoints, 1, -1);
     else {
         printf("--- Unkonown Command ---");
         return -1;
     }
+
+    for (i = 0; i < n; i++)
+    {
+        printf("[");
+        for (j = 0; j < n; j++)
+            printf(" %.4f ", result_mat[i][j]);
+        printf("]\n");
+    }
+
     return 0;
 }
 

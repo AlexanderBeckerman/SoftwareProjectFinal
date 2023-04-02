@@ -14,13 +14,5 @@ double ** gl(Vector * points, int n)
             laplacian[i][j] = diagonal[i][j] - weighted[i][j];
     }
 
-    for (i = 0; i < n; i++)
-    {
-        printf("[");
-        for (j = 0; j < n; j++)
-            printf(" %.4f ", laplacian[i][j]);
-        printf("]\n");
-    }
-
     return laplacian;
 }

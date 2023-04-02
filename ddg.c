@@ -15,13 +15,5 @@ double ** ddg(Vector * points, int n)
         diagonal[i][i] = sum;
     }
 
-    for (i = 0; i < n; i++)
-    {
-        printf("[");
-        for (j = 0; j < n; j++)
-            printf(" %.4f ", diagonal[i][j]);
-        printf("]\n");
-    }
-
     return diagonal;
 }
