@@ -36,9 +36,10 @@ double ** jacobi(double ** L, int n, int flag, int k)
             printf("%.4f , ", eigenValues[j]);
     }
 
-    if (flag == 1)
+    if (flag == 1){
         printf("\n");
         return V;
+    }
 
     if (k == -1) {
         eigenIndexes = eigenGap(eigenValues, n);
