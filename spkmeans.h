@@ -26,3 +26,4 @@ double ** jacobi(double **, int, int, int);
 Vector * spk(Vector *, int, int);
 void pythonModule(char*, char*);
 double ** spkModule(char*, int);
+void kmeans(int, double, int, Vector **, Vector *);
