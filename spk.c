@@ -1,8 +1,9 @@
 #include "spkmeans.h"
 
-Vector * spk(Vector * points, int n)
+Vector * spk(Vector * points, int n, int k)
 {
-    Vector x = points[0];
-    printf("%f , %d" , x.cords->value, n);
-    return points;
+
+    double ** matrix = gl(points, n);
+    matrix = jacobi(matrix, n, 0);
+
 }

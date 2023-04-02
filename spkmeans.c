@@ -5,6 +5,9 @@ int main(int argc, char *argv[]) {
 
     char * command = argv[1];
     char * filename = argv[2];
+    int k = -1;
+    if (argc == 4)
+        k = atoi(argv[3]);
     double n;
     int i;
     int j;
@@ -20,6 +23,7 @@ int main(int argc, char *argv[]) {
         printf("invalid arguments");
         return -1;
     }
+
     FILE* file = fopen(filename, "r");
     if(file == NULL){
         printf("open file error");
@@ -70,7 +74,7 @@ int main(int argc, char *argv[]) {
 
     fclose(file);
     if (strcmp(command, "spk") == 0)
-        spk(head_vec, numpoints);
+        spk(head_vec, numpoints, k);
     else if (strcmp(command, "wam") == 0)
         wam(head_vec, numpoints);
     else if (strcmp(command, "ddg") == 0)
@@ -78,10 +82,22 @@ int main(int argc, char *argv[]) {
     else if (strcmp(command, "gl") == 0)
         gl(head_vec, numpoints);
     else if (strcmp(command, "jacobi") == 0)
-        jacobi(jacboi_mat, numpoints);
+        jacobi(jacboi_mat, numpoints, 1, -1);
     else {
         printf("--- Unkonown Command ---");
         return -1;
     }
     return 0;
+}
+
+void pythonModule(char* file, char* command)
+{
+    char ** args = {"", command, file};
+    main(3, args);
+}
+
+void spkModule(char* file, int k)
+{
+    char ** args = {"", "spk", file, k + '0'};
+    main(3, args);
 }

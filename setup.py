@@ -1,0 +1,8 @@
+from setuptools import Extension, setup
+
+module = Extension("spkmeans", sources=['spkmeansmodule.c'])
+
+setup(name='spkmeans',
+      version='1.0',
+      description='spkmeans algorithm',
+      ext_modules=[module])

@@ -1,14 +1,10 @@
 import numpy as np
 import pandas as pd
 import sys
-
-
-# from mykmeanssp import fit, wam, ddg, gl, jacobi
+from spkmeans import *
 
 def main():
     np.random.seed(0)
-    file = ""
-    goal = ""
 
     if len(sys.argv) == 4:
 
@@ -34,16 +30,16 @@ def main():
     vectors = vectors.tolist()
 
     if goal != "jacobi":
-        # print(vectors)
-        # print(numPoints)
         if goal == "wam":
-            wam(vectors, numPoints)
+            wam(file, "wam")
         elif goal == "ddg":
-            ddg(vectors, numPoints)
+            ddg(file, "ddg")
         elif goal == "gl":
-            gl(vectors, numPoints)
+            gl(file, "gl")
+        elif goal == "jacobi":
+            jacobi(file, "jacobi")
         elif goal == "spk":
-            vectors = #get U rows
+            vectors = spk(file, "spk", k)
             k = len(vectors[0]) #each vectors is a point in R^k
             centroids, centroids_indexes = kmeans_pp(vectors, k)
             dim = len(centroids[0])
@@ -53,9 +49,6 @@ def main():
                 else:
                     print(centroids_indexes[i])
             s = fit(int(iter), float(eps), int(dim), centroids, vectors)
-    else:
-        jacobi(vectors, numPoints)
-
 
 
 def kmeans_pp(vectors, k):

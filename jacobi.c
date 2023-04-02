@@ -7,7 +7,7 @@ double** transform(double ** ,int);
 int* findLargestValue(double **  ,int);
 double ** mult(double **, double ** ,int);
 
-double ** jacobi(double ** L, int n, int flag)
+double ** jacobi(double ** L, int n, int flag, int k)
 {
     int j;
     int i;
@@ -49,14 +49,19 @@ double ** jacobi(double ** L, int n, int flag)
         return V;
     }
 
-    eigenIndexes = eigenGap(eigenValues, n);
-    gap = sizeof(eigenIndexes) / sizeof(eigenIndexes[0]);
-    result = calloc(n, sizeof(double *));
-    for (i = 0; i < n; i++){
-        result[i] = calloc(gap, sizeof(double));
-        for (j = 0; j < gap; j++)
-            result[i][j] = V[i][eigenIndexes[j]];
+    if (k == -1) {
+        eigenIndexes = eigenGap(eigenValues, n);
+        gap = sizeof(eigenIndexes) / sizeof(eigenIndexes[0]);
+        result = calloc(n, sizeof(double *));
+        for (i = 0; i < n; i++) {
+            result[i] = calloc(gap, sizeof(double));
+            for (j = 0; j < gap; j++)
+                result[i][j] = V[i][eigenIndexes[j]];
+        }
     }
+
+    else
+        gap = k;
 
     printf("\n");
     for (i = 0; i < n; i++)
