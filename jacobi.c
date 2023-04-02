@@ -42,11 +42,10 @@ double ** jacobi(double ** L, int n, int flag, int k)
         return V;
     }
 
+    eigenIndexes = eigenGap(eigenValues, n);
     if (k == -1) {
-        eigenIndexes = eigenGap(eigenValues, n);
         gap = eigenIndexes[0];
     }
-
     else
         gap = k;
 
