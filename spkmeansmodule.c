@@ -43,30 +43,34 @@ static PyObject* spk_module(PyObject *self, PyObject *args)
     return listVectors;
 }
 
-static void ddg_module(PyObject *self, PyObject *args)
+static PyObject* ddg_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "ddg");
+    Py_RETURN_NONE;
 }
 
-static void wam_module(PyObject *self, PyObject *args)
+static PyObject* wam_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "wam");
+    Py_RETURN_NONE;
 }
-static void jacobi_module(PyObject *self, PyObject *args)
+static PyObject* jacobi_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "jacobi");
+    Py_RETURN_NONE;
 }
 
-static void gl_module(PyObject *self, PyObject *args)
+static PyObject* gl_module(PyObject *self, PyObject *args)
 {
     char* filename  = getFile(self, args);
     pythonModule(filename, "gl");
+    Py_RETURN_NONE;
 }
 
-static void kmeans_module(PyObject *self, PyObject *args)
+static PyObject* kmeans_module(PyObject *self, PyObject *args)
 {
     int iter;
     double epsilon;
@@ -135,6 +139,7 @@ static void kmeans_module(PyObject *self, PyObject *args)
         }
     }
     kmeans(iter, epsilon, k, centroids, points);
+    Py_RETURN_NONE;
 }
 
 static PyMethodDef spkmeansMethods[] = {
