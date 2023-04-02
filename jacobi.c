@@ -41,7 +41,7 @@ double ** jacobi(double ** L, int n, int flag, int k)
 
     if (k == -1) {
         eigenIndexes = eigenGap(eigenValues, n);
-        gap = sizeof(eigenIndexes) / sizeof(eigenIndexes[0]);
+        gap = sizeof(*eigenIndexes) / sizeof(int);
     }
 
     else

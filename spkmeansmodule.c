@@ -36,7 +36,7 @@ static PyObject* spk_module(PyObject *self, PyObject *args)
     for (i = 0; i != numpoints; ++i) {
         PyList_SET_ITEM(listVectors, i, PyList_New(dim));
         for (j = 0; j != dim; ++j) {
-            PyList_SET_ITEM(PyList_GetItem(listVectors, i), j, PyFloat_AsDouble(points[i][j]));
+            PyList_SET_ITEM(PyList_GetItem(listVectors, i), j, PyFloat_FromDouble(points[i][j]));
         }
     }
 
@@ -143,7 +143,7 @@ static PyMethodDef spkmeansMethods[] = {
         {"gl", gl_module, METH_VARARGS, "The gl algorithm"},
         {"wam", wam_module, METH_VARARGS, "The wam algorithm"},
         {"jacobi", jacobi_module, METH_VARARGS, "The jacobi algorithm"},
-        {"kmeans", kmeans_module, METH_VARARGS, "The kmeans algorithm"}
+        {"kmeans", kmeans_module, METH_VARARGS, "The kmeans algorithm"},
         {NULL, NULL, 0, NULL}
 };
 
