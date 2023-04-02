@@ -21,7 +21,6 @@ static PyObject* spk_module(PyObject *self, PyObject *args)
     char* filename;
     int k, i, j, numpoints, dim;
     PyObject *listVectors;
-    PyObject *vector;
     double ** points;
     if(!PyArg_ParseTuple(args, "si", &filename, &k)) {
         return;

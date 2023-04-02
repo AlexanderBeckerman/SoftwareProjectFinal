@@ -213,7 +213,7 @@ int compare(const void * a, const void * b)
 int* eigenGap(double * eigenValues , int n)
 {
     double max = 0;
-    int index, i, j = 0;
+    int index=0, i, j = 0;
     double * eigenCopy = calloc(n , sizeof (double));
     int * indexes;
     for (i = 0; i < n; ++i)
