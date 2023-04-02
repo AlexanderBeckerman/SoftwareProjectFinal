@@ -143,7 +143,7 @@ static PyMethodDef spkmeansMethods[] = {
         {"gl", gl_module, METH_VARARGS, "The gl algorithm"},
         {"wam", wam_module, METH_VARARGS, "The wam algorithm"},
         {"jacobi", jacobi_module, METH_VARARGS, "The jacobi algorithm"},
-        {"kmeans", kmeans_module, METH_VARARGS, "The kmeans algorithm"}
+        {"kmeans", kmeans_module, METH_VARARGS, "The kmeans algorithm"},
         {NULL, NULL, 0, NULL}
 };
 
