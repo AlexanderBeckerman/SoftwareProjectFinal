@@ -6,7 +6,7 @@ double** wam(Vector * head, int numpoints){
     Vector * curr1 = head;
     int row=0;
     int col=0;
-    int i,j;
+    int i;
     Vector * curr2 = curr1;
     double ** matrix = calloc(numpoints, sizeof(double*));
     for(i=0;i<numpoints;i++){
