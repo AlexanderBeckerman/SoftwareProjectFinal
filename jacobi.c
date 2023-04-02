@@ -32,12 +32,13 @@ double ** jacobi(double ** L, int n, int flag, int k)
 
     for(j = 0; j < n; j++){
         eigenValues[j] = L[j][j];
-        if (flag == 1)
-            printf("%.4f , ", eigenValues[j]);
+        if (flag == 1 && j < n-1)
+            printf("%.4f,", eigenValues[j]);
+        else if(flag == 1 && j == n-1)
+            printf("%.4f\n", eigenValues[j]);
     }
 
     if (flag == 1){
-        printf("\n");
         return V;
     }
 
