@@ -36,7 +36,7 @@ static PyObject* spk_module(PyObject *self, PyObject *args)
     for (i = 0; i != numpoints; ++i) {
         PyList_SET_ITEM(listVectors, i, PyList_New(dim));
         for (j = 0; j != dim; ++j) {
-            PyList_SET_ITEM(PyList_GetItem(listVectors, i), j, PyFloat_AsDouble(points[i][j]));
+            PyList_SET_ITEM(PyList_GetItem(listVectors, i), j, PyFloat_FromDouble(points[i][j]));
         }
     }
 
