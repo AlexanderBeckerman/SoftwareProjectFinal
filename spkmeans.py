@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import sys
 from spkmeans import *
 
@@ -24,10 +23,10 @@ def main():
         print("Invalid number of arguments")
         exit()
 
-    df = pd.read_csv(file, sep=",", header=None)
-    vectors = df.to_numpy()
-    numPoints = vectors.shape[0]
-    vectors = vectors.tolist()
+    # df = pd.read_csv(file, sep=",", header=None)
+    # vectors = df.to_numpy()
+    # numPoints = vectors.shape[0]
+    # vectors = vectors.tolist()
 
 
     if goal == "wam":
@@ -41,7 +40,7 @@ def main():
     elif goal == "spk":
         vectors = spk(file, k)
         k = len(vectors[0]) #each vectors is a point in R^k
-        centroids, centroids_indexes = kmeans_pp(vectors, k)
+        centroids, centroids_indexes = kmeans_pp(np.array(vectors), k)
         dim = len(centroids[0])
         for i in range(len(centroids_indexes)):
             if (i != len(centroids_indexes) - 1):
