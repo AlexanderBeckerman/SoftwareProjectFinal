@@ -98,6 +98,8 @@ void pythonModule(char* file, char* command)
 
 void spkModule(char* file, int k)
 {
-    char * args[4] = {"spkmeans", "spk", file, k + '0'};
+    char kk[1];
+    kk[0] = k + '0';
+    char * args[4] = {"spkmeans", "spk", file, kk};
     main(3, args);
 }
