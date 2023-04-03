@@ -5,7 +5,7 @@ Vector * addVectors(Vector *, Vector *);
 double calcDistance(Vector * , Vector *);
 int assignPoint(Vector *, Vector ** , int);
 void freeList(Vector *);
-void freeArray(Vector **, int);
+void freeArray(Vector **, int, int);
 void freeVector(Vector *);
 
 
@@ -22,7 +22,6 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     clusters = calloc(k, sizeof(Vector));
     head_vec = py_points;
     centroids = py_centroids;
-
     while (iterations < iter && maxDist >= EPSILON) {
         i = 0;
         for(;i < k ; i++){
@@ -75,7 +74,7 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
             maxDist =  updatedDist > maxDist ? updatedDist : maxDist;
 
             *centroids[i] = *newCent;
-            freeVector(newCent);
+            free(newCent);
         }
         iterations++;
     }
@@ -93,9 +92,8 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         printf("\n");
     }
 
-    freeArray(clusters, k);
-    freeArray(centroids, k);
-    freeList(head_vec);
+    freeArray(clusters, k, 1);
+    freeArray(centroids, k, 0);
 }
 
 
@@ -167,7 +165,7 @@ void freeList(Vector *list)
     }
 }
 
-void freeArray(Vector **arr, int n)
+void freeArray(Vector **arr, int n, int flag)
 {
     Vector * iterator = *arr;
     Vector * temp;
@@ -176,7 +174,10 @@ void freeArray(Vector **arr, int n)
     {
         temp = iterator;
         iterator = arr[i + 1];
-        freeVector(temp);
+        if(flag == 0)
+            freeVector(temp);
+        else
+            freeList(temp);
     }
 }
 
@@ -190,4 +191,5 @@ void freeVector(Vector *vec)
         iterator = iterator->next;
         free(temp);
     }
+    free(vec);
 }
