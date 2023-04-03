@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     int j;
     int numpoints=0;
     char c;
-    double ** jacboi_mat;
+    double ** jacboi_mat = NULL;
     double ** result_mat;
     struct vector *head_vec;
     struct vector *curr_vec;
@@ -74,7 +74,6 @@ int main(int argc, char *argv[]) {
     }
 
 
-    result_mat = NULL;
     fclose(file);
     if (strcmp(command, "spk") == 0)
         spk(head_vec, numpoints, k);
@@ -101,8 +100,11 @@ int main(int argc, char *argv[]) {
             }
             printf("\n");
         }
-    }
 
+        for (i = 0; i < numpoints; i++)
+            free(result_mat[i]);
+        free(result_mat);
+    }
 
     return 0;
 }
@@ -122,7 +124,6 @@ double ** spkModule(char* filename, int k)
     Cord *curr_cord;
     double ** p;
     double n;
-    int dim = 0;
     int numpoints=0;
     char c;
     FILE* file = fopen(filename, "r");

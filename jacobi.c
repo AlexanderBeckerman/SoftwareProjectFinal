@@ -6,6 +6,7 @@ int* eigenGap(double *  ,int);
 double** transform(double ** ,int);
 int* findLargestValue(double **  ,int);
 double ** mult(double **, double ** ,int);
+void freeMatrix(double **, int);
 
 double ** jacobi(double ** L, int n, int flag, int k)
 {
@@ -61,6 +62,10 @@ double ** jacobi(double ** L, int n, int flag, int k)
             result[i][j] = V[i][eigenIndexes[j + 1]];
     }
 
+    freeMatrix(V, n);
+    free(eigenIndexes);
+    free(eigenValues);
+
     return result;
 }
 
@@ -111,6 +116,8 @@ double** transform(double ** a , int n)
     newA[j][j] = s*s*a[i][i] + c*c*a[j][j] + 2*c*s*a[i][j];
     newA[j][i] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
 
+    freeMatrix(a, n);
+
     return newA;
 
 }
@@ -127,6 +134,9 @@ double ** mult(double ** a, double ** b , int n)
             }
         }
     }
+
+    freeMatrix(a, n);
+    freeMatrix(b, n);
 
     return result;
 }
@@ -154,6 +164,7 @@ double ** createP(double ** a , int n)
     matrix[i][j] = s;
     matrix[j][i] = -s;
 
+    free(iandj);
     return matrix;
 
 }
@@ -199,6 +210,7 @@ double* getCandS(double ** a, int n)
     results[0] = c;
     results[1] = s;
 
+    free(iandj);
     return results;
 }
 int compare(const void * a, const void * b)
@@ -241,8 +253,16 @@ int* eigenGap(double * eigenValues , int n)
             if (eigenValues[j] == eigenCopy[i])
                 indexes[i + 1] = j;
 
-
+    free(eigenCopy);
     return indexes;
+}
+
+void freeMatrix(double ** mat, int n)
+{
+    int i;
+    for (i = 0; i < n; i++)
+        free(mat[i]);
+    free(mat);
 }
 
 
