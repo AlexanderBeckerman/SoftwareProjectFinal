@@ -51,15 +51,15 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         for(;i < k ; i++){
             int counter = 1;
             Vector *iterator = clusters[i];
-            Vector *newCent = malloc(sizeof(Vector));
+            Vector *newCent;
             Cord * cordsIterator;
             double updatedDist;
             if (iterator == NULL)
                 continue;
-            *newCent = *iterator;
+            newCent = iterator;
             iterator = iterator->next;
             while(iterator != NULL){
-                *newCent = *addVectors(newCent, iterator);
+                newCent = addVectors(newCent, iterator);
                 iterator = iterator->next;
                 counter++;
             }
@@ -73,8 +73,9 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
             updatedDist = calcDistance(centroids[i], newCent);
             maxDist =  updatedDist > maxDist ? updatedDist : maxDist;
 
-            *centroids[i] = *newCent;
-            free(newCent);
+            iterator = centroids[i];
+            centroids[i] = newCent;
+            freeVector(iterator);
         }
         iterations++;
     }
@@ -150,6 +151,8 @@ Vector * addVectors(Vector * v1, Vector * v2){
             resCord = resCord->next;
 
     }
+
+    freeVector(v1);
     return res;
 }
 
