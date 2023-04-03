@@ -92,14 +92,8 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         }
         printf("\n");
     }
-
-    freeList(head_vec);
-    i = 0;
-    for (;i < k; i++) {
-        free(clusters[i]);
-        freeVector(centroids[i]);
-    }
 }
+
 
 double calcDistance(Vector * point, Vector * centroid){
     double diff = 0;
