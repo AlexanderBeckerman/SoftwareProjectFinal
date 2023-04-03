@@ -5,43 +5,44 @@ Vector * addVectors(Vector *, Vector *);
 double calcDistance(Vector * , Vector *);
 int assignPoint(Vector *, Vector ** , int);
 void freeList(Vector *);
-void freeArray(Vector **, int, int);
 void freeVector(Vector *);
+
 
 
 void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_points)
 {
-    Vector *head_vec;
-    Vector *curr_vec;
+    struct vector *head_vec;
+    struct vector *curr_vec;
     int i;
     double EPSILON  = epsilon;
-    Vector ** centroids;
-    Vector ** clusters;
+    struct vector ** centroids;
+    struct vector ** clusters;
     int iterations = 0;
     double maxDist = EPSILON + 1;
-    clusters = calloc(k, sizeof(Vector *));
+    clusters = calloc(k, sizeof(struct vector));
     head_vec = py_points;
     centroids = py_centroids;
+
     while (iterations < iter && maxDist >= EPSILON) {
-        i = 0;
+        int i = 0;
         for(;i < k ; i++){
-            freeVector(clusters[i]);
-            clusters[i] = malloc(sizeof(Vector));
+            free(clusters[i]);
+            clusters[i] = calloc(1, sizeof(struct vector));
         }
         curr_vec = head_vec;
         maxDist = 0;
         while (curr_vec != NULL) {
             int closest = assignPoint(curr_vec, centroids, k);
-            Vector *iterator = clusters[closest];
+            struct vector *iterator = clusters[closest];
             if (iterator->cords) {
                 while (iterator->next != NULL)
                     iterator = iterator->next;
-                iterator->next = malloc(sizeof(Vector));
+                iterator->next = malloc(sizeof(struct vector));
                 *iterator->next = *curr_vec;
                 iterator->next->next = NULL;
             }
             else {
-                clusters[closest] = malloc(sizeof(Vector));
+                clusters[closest] = malloc(sizeof(struct vector));
                 *clusters[closest] = *curr_vec;
                 clusters[closest]->next = NULL;
             }
@@ -50,16 +51,16 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         i = 0;
         for(;i < k ; i++){
             int counter = 1;
-            Vector *iterator = clusters[i];
-            Vector *newCent;
-            Cord * cordsIterator;
+            struct vector *iterator = clusters[i];
+            struct vector *newCent = malloc(sizeof(struct vector));
+            struct cord * cordsIterator;
             double updatedDist;
             if (iterator == NULL)
                 continue;
-            newCent = iterator;
+            *newCent = *iterator;
             iterator = iterator->next;
             while(iterator != NULL){
-                newCent = addVectors(newCent, iterator);
+                *newCent = *addVectors(newCent, iterator);
                 iterator = iterator->next;
                 counter++;
             }
@@ -73,16 +74,15 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
             updatedDist = calcDistance(centroids[i], newCent);
             maxDist =  updatedDist > maxDist ? updatedDist : maxDist;
 
-            iterator = centroids[i];
-            centroids[i] = newCent;
-            freeVector(iterator);
+            *centroids[i] = *newCent;
+            free(newCent);
         }
         iterations++;
     }
     i = 0;
     for (;i < k; i++)
     {
-        Cord * printIter = centroids[i]->cords;
+        struct cord * printIter = centroids[i]->cords;
         while (printIter != NULL)
         {
             printf("%.4f", printIter->value);
@@ -92,16 +92,13 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         }
         printf("\n");
     }
-
-    freeArray(clusters, k, 1);
-    freeArray(centroids, k, 0);
 }
 
 
 double calcDistance(Vector * point, Vector * centroid){
     double diff = 0;
-    Cord * pointCords = point->cords;
-    Cord * centroidCords = centroid->cords;
+    struct cord * pointCords = point->cords;
+    struct cord * centroidCords = centroid->cords;
     while(pointCords != NULL){
         diff += pow(pointCords->value - centroidCords->value, 2);
         pointCords = pointCords->next;
@@ -130,35 +127,34 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
     return minind;
 }
 
-Vector * addVectors(Vector * v1, Vector * v2){
-    Vector * res = malloc(sizeof(Vector));
-    Cord * resCord;
-    Cord * v1Cord;
-    Cord * v2Cord;
-    res->cords = malloc(sizeof (Cord));
+struct vector * addVectors(Vector * v1, Vector * v2){
+    struct vector * res = malloc(sizeof(struct vector));
+    struct cord * resCord;
+    struct cord * v1Cord;
+    struct cord * v2Cord;
+    res->cords = malloc(sizeof (struct cord));
     res->next = NULL;
     resCord = res->cords;
     v1Cord = v1->cords;
     v2Cord = v2->cords;
     while(v1Cord != NULL){
         resCord->value = v1Cord->value + v2Cord->value;
-        resCord->next = malloc(sizeof (Cord));
+        resCord->next = malloc(sizeof (struct cord));
         v1Cord = v1Cord->next;
         v2Cord = v2Cord->next;
         if (v1Cord == NULL)
             resCord->next = NULL;
         else
             resCord = resCord->next;
-    }
 
-    freeVector(v1);
+    }
     return res;
 }
 
 void freeList(Vector *list)
 {
-    Vector * iterator = list;
-    Vector * temp;
+    struct vector * iterator = list;
+    struct vector * temp;
     while (iterator != NULL)
     {
         temp = iterator;
@@ -167,31 +163,15 @@ void freeList(Vector *list)
     }
 }
 
-void freeArray(Vector **arr, int n, int flag)
-{
-    Vector * iterator = *arr;
-    Vector * temp;
-    int i;
-    for(i = 0; i < n - 1; i++)
-    {
-        temp = iterator;
-        iterator = arr[i + 1];
-        if(flag == 0)
-            freeVector(temp);
-        else
-            freeList(temp);
-    }
-}
-
 void freeVector(Vector *vec)
 {
-    Cord * iterator = vec->cords;
-    Cord * temp;
+    struct cord * iterator = vec->cords;
+    struct cord * temp;
     while (iterator != NULL)
     {
         temp = iterator;
         iterator = iterator->next;
         free(temp);
     }
-    free(vec);
 }
+
