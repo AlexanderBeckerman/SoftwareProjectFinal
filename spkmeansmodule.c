@@ -27,9 +27,10 @@ static PyObject* spk_module(PyObject *self, PyObject *args)
     }
 
     points = spkModule(filename, k);
-
-    numpoints = sizeof(points) / sizeof(points[0]);
-    dim = sizeof(points[0]) / sizeof(points[0][0]);
+    points--;
+    numpoints = points[0][0];
+    dim = points[0][1];
+    points++;
 
     listVectors = PyList_New(numpoints);
     for (i = 0; i != numpoints; ++i) {

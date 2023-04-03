@@ -50,7 +50,11 @@ double ** jacobi(double ** L, int n, int flag, int k)
         gap = k;
 
 
-    result = calloc(n, sizeof(double *));
+    result = calloc(n + 1, sizeof(double *));
+    result[0] = calloc(2, sizeof (double));
+    result[0][0] = n;
+    result[0][1] = gap;
+    result++;
     for (i = 0; i < n; i++) {
         result[i] = calloc(gap, sizeof(double));
         for (j = 0; j < gap; j++)

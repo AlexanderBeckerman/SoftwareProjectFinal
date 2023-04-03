@@ -122,6 +122,7 @@ double ** spkModule(char* filename, int k)
     Cord *curr_cord;
     double ** p;
     double n;
+    int dim = 0;
     int numpoints=0;
     char c;
     FILE* file = fopen(filename, "r");
