@@ -154,17 +154,16 @@ double ** createP(double ** a , int n)
 
     for(row=0;row<n;row++){
         matrix[row] = calloc(n, sizeof(double));
-    }
-
-    for(row = 0; row < n; row ++){
         matrix[row][row] = 1;
     }
+
     matrix[i][i] = c;
     matrix[j][j] = c;
     matrix[i][j] = s;
     matrix[j][i] = -s;
 
     free(iandj);
+    free(cands);
     return matrix;
 
 }

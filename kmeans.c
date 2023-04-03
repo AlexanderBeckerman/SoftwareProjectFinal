@@ -11,15 +11,15 @@ void freeVector(Vector *);
 
 void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_points)
 {
-    struct vector *head_vec;
-    struct vector *curr_vec;
+    Vector *head_vec;
+    Vector *curr_vec;
     int i;
     double EPSILON  = epsilon;
-    struct vector ** centroids;
-    struct vector ** clusters;
+    Vector ** centroids;
+    Vector ** clusters;
     int iterations = 0;
     double maxDist = EPSILON + 1;
-    clusters = calloc(k, sizeof(struct vector));
+    clusters = calloc(k, sizeof(Vector));
     head_vec = py_points;
     centroids = py_centroids;
 
@@ -27,22 +27,22 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         int i = 0;
         for(;i < k ; i++){
             free(clusters[i]);
-            clusters[i] = calloc(1, sizeof(struct vector));
+            clusters[i] = calloc(1, sizeof(Vector));
         }
         curr_vec = head_vec;
         maxDist = 0;
         while (curr_vec != NULL) {
             int closest = assignPoint(curr_vec, centroids, k);
-            struct vector *iterator = clusters[closest];
+            Vector *iterator = clusters[closest];
             if (iterator->cords) {
                 while (iterator->next != NULL)
                     iterator = iterator->next;
-                iterator->next = malloc(sizeof(struct vector));
+                iterator->next = malloc(sizeof(Vector));
                 *iterator->next = *curr_vec;
                 iterator->next->next = NULL;
             }
             else {
-                clusters[closest] = malloc(sizeof(struct vector));
+                clusters[closest] = malloc(sizeof(Vector));
                 *clusters[closest] = *curr_vec;
                 clusters[closest]->next = NULL;
             }
@@ -51,9 +51,9 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         i = 0;
         for(;i < k ; i++){
             int counter = 1;
-            struct vector *iterator = clusters[i];
-            struct vector *newCent = malloc(sizeof(struct vector));
-            struct cord * cordsIterator;
+            Vector *iterator = clusters[i];
+            Vector *newCent = malloc(sizeof(Vector));
+            Cord * cordsIterator;
             double updatedDist;
             if (iterator == NULL)
                 continue;
@@ -82,7 +82,7 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     i = 0;
     for (;i < k; i++)
     {
-        struct cord * printIter = centroids[i]->cords;
+        Cord * printIter = centroids[i]->cords;
         while (printIter != NULL)
         {
             printf("%.4f", printIter->value);
@@ -97,8 +97,8 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
 
 double calcDistance(Vector * point, Vector * centroid){
     double diff = 0;
-    struct cord * pointCords = point->cords;
-    struct cord * centroidCords = centroid->cords;
+    Cord * pointCords = point->cords;
+    Cord * centroidCords = centroid->cords;
     while(pointCords != NULL){
         diff += pow(pointCords->value - centroidCords->value, 2);
         pointCords = pointCords->next;
@@ -127,19 +127,19 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
     return minind;
 }
 
-struct vector * addVectors(Vector * v1, Vector * v2){
-    struct vector * res = malloc(sizeof(struct vector));
-    struct cord * resCord;
-    struct cord * v1Cord;
-    struct cord * v2Cord;
-    res->cords = malloc(sizeof (struct cord));
+Vector * addVectors(Vector * v1, Vector * v2){
+    Vector * res = malloc(sizeof(Vector));
+    Cord * resCord;
+    Cord * v1Cord;
+    Cord * v2Cord;
+    res->cords = malloc(sizeof (Cord));
     res->next = NULL;
     resCord = res->cords;
     v1Cord = v1->cords;
     v2Cord = v2->cords;
     while(v1Cord != NULL){
         resCord->value = v1Cord->value + v2Cord->value;
-        resCord->next = malloc(sizeof (struct cord));
+        resCord->next = malloc(sizeof (Cord));
         v1Cord = v1Cord->next;
         v2Cord = v2Cord->next;
         if (v1Cord == NULL)
@@ -153,8 +153,8 @@ struct vector * addVectors(Vector * v1, Vector * v2){
 
 void freeList(Vector *list)
 {
-    struct vector * iterator = list;
-    struct vector * temp;
+    Vector * iterator = list;
+    Vector * temp;
     while (iterator != NULL)
     {
         temp = iterator;
@@ -165,8 +165,8 @@ void freeList(Vector *list)
 
 void freeVector(Vector *vec)
 {
-    struct cord * iterator = vec->cords;
-    struct cord * temp;
+    Cord * iterator = vec->cords;
+    Cord * temp;
     while (iterator != NULL)
     {
         temp = iterator;
