@@ -19,14 +19,14 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     Vector ** clusters;
     int iterations = 0;
     double maxDist = EPSILON + 1;
-    clusters = calloc(k, sizeof(Vector));
+    clusters = calloc(k, sizeof(Vector *));
     head_vec = py_points;
     centroids = py_centroids;
     while (iterations < iter && maxDist >= EPSILON) {
         i = 0;
         for(;i < k ; i++){
-            free(clusters[i]);
-            clusters[i] = calloc(1, sizeof(Vector));
+            freeVector(clusters[i]);
+            clusters[i] = malloc(sizeof(Vector));
         }
         curr_vec = head_vec;
         maxDist = 0;
@@ -149,7 +149,6 @@ Vector * addVectors(Vector * v1, Vector * v2){
             resCord->next = NULL;
         else
             resCord = resCord->next;
-
     }
 
     freeVector(v1);
