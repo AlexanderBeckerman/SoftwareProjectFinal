@@ -5,7 +5,7 @@ Vector * addVectors(Vector *, Vector *);
 double calcDistance(Vector * , Vector *);
 int assignPoint(Vector *, Vector ** , int);
 void freeList(Vector *);
-void freeArray(Vector **);
+void freeArray(Vector **, int);
 void freeVector(Vector *);
 
 
@@ -93,8 +93,8 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         printf("\n");
     }
 
-    freeArray(clusters);
-    freeArray(centroids);
+    freeArray(clusters, k);
+    freeArray(centroids, k);
     freeList(head_vec);
 }
 
