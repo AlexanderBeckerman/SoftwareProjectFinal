@@ -84,8 +84,8 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
         printf("\n");
     }
 
-    freeList(py_points, 1);
-    freeArray(py_centroids, k, 0);
+    free(py_points);
+    free(py_centroids);
     free(clusters);
 }
 
