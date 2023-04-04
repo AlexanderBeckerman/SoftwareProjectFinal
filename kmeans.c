@@ -6,31 +6,26 @@ double calcDistance(Vector * , Vector *);
 int assignPoint(Vector *, Vector ** , int);
 void freeList(Vector *);
 void freeVector(Vector *);
-int isNumber(const char *);
 
 
-void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_points)
+void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
 {
     struct vector *head_vec;
     struct vector *curr_vec;
     int i;
-    double EPSILON  = epsilon;
     struct vector ** centroids;
     struct vector ** clusters;
     int iterations = 0;
-    double maxDist = EPSILON + 1;
     clusters = calloc(k, sizeof(struct vector));
     head_vec = py_points;
     centroids = py_centroids;
 
-    while (iterations < iter && maxDist >= EPSILON) {
-        int i = 0;
-        for(;i < k ; i++){
+    while (iterations < iter) {
+        for(i = 0;i < k ; i++){
             free(clusters[i]);
             clusters[i] = calloc(1, sizeof(struct vector));
         }
         curr_vec = head_vec;
-        maxDist = 0;
         while (curr_vec != NULL) {
             int closest = assignPoint(curr_vec, centroids, k);
             struct vector *iterator = clusters[closest];
@@ -48,13 +43,11 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
             }
             curr_vec = curr_vec->next;
         }
-        i = 0;
-        for(;i < k ; i++){
+        for(i = 0;i < k ; i++){
             int counter = 1;
             struct vector *iterator = clusters[i];
             struct vector *newCent = malloc(sizeof(struct vector));
             struct cord * cordsIterator;
-            double updatedDist;
             if (iterator == NULL)
                 continue;
             *newCent = *iterator;
@@ -71,16 +64,14 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
                 cordsIterator->value = cordsIterator->value / counter;
                 cordsIterator = cordsIterator->next;
             }
-            updatedDist = calcDistance(centroids[i], newCent);
-            maxDist =  updatedDist > maxDist ? updatedDist : maxDist;
 
             *centroids[i] = *newCent;
             free(newCent);
         }
         iterations++;
     }
-    i = 0;
-    for (;i < k; i++)
+
+    for (i = 0;i < k; i++)
     {
         struct cord * printIter = centroids[i]->cords;
         while (printIter != NULL)
@@ -173,15 +164,4 @@ void freeVector(Vector *vec)
         iterator = iterator->next;
         free(temp);
     }
-}
-
-int isNumber(const char *k)
-{
-    while (*k != '\0')
-    {
-        if (*k < '0' || *k > '9')
-            return 0;
-        k++;
-    }
-    return 1;
 }
