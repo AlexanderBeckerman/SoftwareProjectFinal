@@ -150,8 +150,7 @@ Vector * addVectors(Vector * v1, Vector * v2, int flag){
             resCord = resCord->next;
     }
 
-    if (flag == 0)
-        freeVector(v1);
+    
     return res;
 }
 
