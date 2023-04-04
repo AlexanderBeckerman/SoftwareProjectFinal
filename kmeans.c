@@ -14,7 +14,6 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
 {
     Vector *head_vec;
     Vector *curr_vec;
-    Cord * curr_cord;
     int i;
     double EPSILON = epsilon;
     Vector ** centroids;
