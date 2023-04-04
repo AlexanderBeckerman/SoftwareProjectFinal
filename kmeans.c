@@ -112,7 +112,7 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         }
         printf("\n");
     }
-
+    printf("right before the last free");
     freeList(py_points, 1);
     freeArray(py_centroids, 3, 0);
     free(clusters);
