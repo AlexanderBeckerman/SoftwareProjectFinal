@@ -23,12 +23,11 @@ double ** jacobi(double ** L, int n, int flag, int k)
     double * eigenValues = malloc(n* sizeof(double));
 
     while(offsetDiff > epsilon && rotations < 100){
-
+        if (rotations != 0)
+            V = mult(V, createP(L, n), n);
         L = transform(L, n);
         offsetDiff = offset - getOff(L, n);
         offset = getOff(L, n);
-        if (rotations != 0 && offsetDiff > epsilon)
-            V = mult(V, createP(L, n), n);
         rotations++;
     }
 
