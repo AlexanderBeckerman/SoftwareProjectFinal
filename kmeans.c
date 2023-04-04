@@ -125,6 +125,7 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
     Cord * resCord;
     Cord * v1Cord;
     Cord * v2Cord;
+    int x = flag;
     res->cords = malloc(sizeof (Cord));
     res->next = NULL;
     resCord = res->cords;
@@ -141,8 +142,8 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
             resCord = resCord->next;
 
     }
+    x++;
 
-   
     return res;
 }
 
