@@ -82,9 +82,6 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
         printf("\n");
     }
 
-    freeList(py_points, 1);
-    freeArray(py_centroids, 3, 0);
-    free(clusters);
 }
 
 
@@ -125,7 +122,6 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
     Cord * resCord;
     Cord * v1Cord;
     Cord * v2Cord;
-    int x = flag;
     res->cords = malloc(sizeof (Cord));
     res->next = NULL;
     resCord = res->cords;
@@ -142,8 +138,9 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
             resCord = resCord->next;
 
     }
-    x++;
 
+    if (flag == 0)
+        freeVector(v1);
     return res;
 }
 
