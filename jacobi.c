@@ -19,7 +19,7 @@ double ** jacobi(double ** L, int n, int flag, int k)
     double epsilon = 0.00001;
     double offset = getOff(L, n);
     double offsetDiff = epsilon + 1;
-    double ** V;
+    double ** V = createP(L, n);
     double * eigenValues = malloc(n* sizeof(double));
 
     while(offsetDiff > epsilon && rotations < 100){
@@ -31,8 +31,6 @@ double ** jacobi(double ** L, int n, int flag, int k)
             break;
         if (rotations != 0)
             V = mult(V, L, n);
-        else
-            V = L;
         rotations++;
     }
 
@@ -121,7 +119,8 @@ double** transform(double ** a , int n)
     newA[i][i] = c*c*a[i][i] + s*s*a[j][j] - 2*c*s*a[i][j];
     newA[j][j] = s*s*a[i][i] + c*c*a[j][j] + 2*c*s*a[i][j];
     newA[j][i] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
-    
+
+    freeMatrix(a, n);
 
     return newA;
 
