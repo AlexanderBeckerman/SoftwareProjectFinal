@@ -83,7 +83,7 @@ static PyObject* kmeans_module(PyObject *self, PyObject *args)
     int i;
     int j;
 
-    if(!PyArg_ParseTuple(args, "idiOO", &iter,&m, &centList, &pointList)) {
+    if(!PyArg_ParseTuple(args, "iiOO", &iter,&m, &centList, &pointList)) {
         return NULL;
     }
 
