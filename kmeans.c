@@ -50,7 +50,7 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     }
 
     while (iterations < iter && maxDist >= EPSILON) {
-        freeArray(clusters, k, 2);
+        
         clusters = calloc(k, sizeof(Vector));
         curr_vec = head_vec;
         maxDist = 0;
