@@ -17,13 +17,15 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
     Vector ** centroids;
     Vector ** clusters;
     int iterations = 0;
-    clusters = calloc(k, sizeof(Vector *));
+    clusters = calloc(k, sizeof(Vector));
     head_vec = py_points;
     centroids = py_centroids;
 
     while (iterations < iter) {
-        free(clusters);
-        clusters = calloc(k, sizeof(Vector *));
+        for (i = 0; i < k; ++i) {
+            free(clusters[i]);
+            clusters[i] = calloc(1, sizeof(Vector));
+        }
         curr_vec = head_vec;
         while (curr_vec != NULL) {
             int closest = assignPoint(curr_vec, centroids, k);
