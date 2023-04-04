@@ -44,15 +44,15 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
         }
         for(i = 0;i < k ; i++){
             int counter = 1;
-              Vector *iterator = clusters[i];
-              Vector *newCent;
+            Vector *iterator = clusters[i];
+            Vector *newCent = malloc(sizeof (Vector));
             Cord * cordsIterator;
             if (iterator == NULL)
                 continue;
-            newCent = iterator;
+            *newCent = *iterator;
             iterator = iterator->next;
             while(iterator != NULL){
-                newCent = addVectors(newCent, iterator, newCent == clusters[i]);
+                *newCent = *addVectors(newCent, iterator, newCent == clusters[i]);
                 iterator = iterator->next;
                 counter++;
             }
@@ -64,7 +64,7 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
                 cordsIterator = cordsIterator->next;
             }
 
-            centroids[i] = newCent;
+            *centroids[i] = *newCent;
         }
         iterations++;
     }
@@ -82,6 +82,9 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
         printf("\n");
     }
 
+    freeList(py_points, 1);
+    freeArray(py_centroids, k, 0);
+    free(clusters);
 }
 
 
@@ -136,7 +139,6 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
             resCord->next = NULL;
         else
             resCord = resCord->next;
-
     }
 
     if (flag == 0)
