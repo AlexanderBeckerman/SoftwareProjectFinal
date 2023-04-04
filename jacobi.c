@@ -63,6 +63,7 @@ double ** jacobi(double ** L, int n, int flag, int k)
     }
 
     freeMatrix(V, n);
+    freeMatrix(L, n);
     free(eigenIndexes);
     free(eigenValues);
 
