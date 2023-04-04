@@ -14,6 +14,7 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
 {
     Vector *head_vec;
     Vector *curr_vec;
+    Cord * curr_cord;
     int i;
     double EPSILON = epsilon;
     Vector ** centroids;
@@ -23,6 +24,30 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     clusters = calloc(k, sizeof(Vector));
     head_vec = py_points;
     centroids = py_centroids;
+
+    curr_vec = head_vec;
+    printf("the point \n");
+    while (curr_vec != NULL)
+    {
+        curr_cord = curr_vec->cords;
+        while (curr_cord != NULL)
+        {
+            printf("  %.4f  " , curr_cord->value);
+            curr_cord = curr_cord->next;
+        }
+        printf("\n");
+        curr_vec = curr_vec->next;
+    }
+    printf("the centroids \n");
+    for (i = 0; i < k; ++i) {
+        curr_cord = centroids[i]->cords;
+        while (curr_cord != NULL)
+        {
+            printf("  %.4f  " , curr_cord->value);
+            curr_cord = curr_cord->next;
+        }
+        printf("\n");
+    }
 
     while (iterations < iter && maxDist >= EPSILON) {
         freeArray(clusters, k, 2);
