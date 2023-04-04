@@ -4,7 +4,7 @@
 Vector * addVectors(Vector *, Vector *, int);
 double calcDistance(Vector * , Vector *);
 int assignPoint(Vector *, Vector ** , int);
-void freeList(Vector *);
+void freeList(Vector *, int);
 void freeArray(Vector **, int, int);
 void freeVector(Vector *);
 
@@ -25,16 +25,16 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     centroids = py_centroids;
 
     while (iterations < iter && maxDist >= EPSILON) {
-        for(i = 0;i < k ; i++){
-            free(clusters[i]);
-            clusters[i] = calloc(1, sizeof(Vector));
-        }
+        i = 0;
+        freeArray(clusters, k, 2);
+        clusters = calloc(k, sizeof(Vector));
+
         curr_vec = head_vec;
         maxDist = 0;
         while (curr_vec != NULL) {
             int closest = assignPoint(curr_vec, centroids, k);
             Vector *iterator = clusters[closest];
-            if (iterator->cords) {
+            if (iterator && iterator->cords) {
                 while (iterator->next != NULL)
                     iterator = iterator->next;
                 iterator->next = malloc(sizeof(Vector));
@@ -92,8 +92,9 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
         printf("\n");
     }
 
-    freeList(py_points);
-    freeArray(py_centroids, k, 0);
+    freeList(py_points, 1);
+    freeArray(py_centroids, 3, 0);
+    free(clusters);
 }
 
 
@@ -134,7 +135,6 @@ Vector * addVectors(Vector * v1, Vector * v2, int flag){
     Cord * resCord;
     Cord * v1Cord;
     Cord * v2Cord;
-    int x = flag;
     res->cords = malloc(sizeof (Cord));
     res->next = NULL;
     resCord = res->cords;
@@ -149,13 +149,15 @@ Vector * addVectors(Vector * v1, Vector * v2, int flag){
             resCord->next = NULL;
         else
             resCord = resCord->next;
-    }
-    x++;
 
+    }
+
+    if (flag == 0)
+        freeVector(v1);
     return res;
 }
 
-void freeList(Vector *list)
+void freeList(Vector *list, int flag)
 {
     Vector * iterator = list;
     Vector * temp;
@@ -163,7 +165,10 @@ void freeList(Vector *list)
     {
         temp = iterator;
         iterator = iterator->next;
-        freeVector(temp);
+        if (flag == 1)
+            freeVector(temp);
+        else
+            free(temp);
     }
 }
 
@@ -175,9 +180,12 @@ void freeArray(Vector **arr, int n, int flag)
         iterator = arr[i];
         if (flag == 1)
             freeVector(iterator);
+        else if (flag == 0)
+            freeList(iterator, 1);
         else
-            freeList(iterator);
+            free(iterator);
     }
+    free(arr);
 }
 
 void freeVector(Vector *vec)
@@ -190,5 +198,6 @@ void freeVector(Vector *vec)
         iterator = iterator->next;
         free(temp);
     }
+    free(vec);
 }
 
