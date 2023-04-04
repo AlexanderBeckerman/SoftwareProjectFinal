@@ -10,25 +10,22 @@ void freeVector(Vector *);
 
 
 
-void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_points)
+void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
 {
     Vector *head_vec;
     Vector *curr_vec;
     int i;
-    double EPSILON = epsilon;
     Vector ** centroids;
     Vector ** clusters;
     int iterations = 0;
-    double maxDist = EPSILON + 1;
     clusters = calloc(k, sizeof(Vector));
     head_vec = py_points;
     centroids = py_centroids;
 
-    while (iterations < iter && maxDist >= EPSILON) {
+    while (iterations < iter) {
         free(clusters);
         clusters = calloc(k, sizeof(Vector));
         curr_vec = head_vec;
-        maxDist = 0;
         while (curr_vec != NULL) {
             int closest = assignPoint(curr_vec, centroids, k);
             Vector *iterator = clusters[closest];
@@ -51,7 +48,6 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
             Vector *iterator = clusters[i];
             Vector *newCent;
             Cord * cordsIterator;
-            double updatedDist;
             if (iterator == NULL)
                 continue;
             newCent = iterator;
@@ -68,8 +64,7 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
                 cordsIterator->value = cordsIterator->value / counter;
                 cordsIterator = cordsIterator->next;
             }
-            updatedDist = calcDistance(centroids[i], newCent);
-            maxDist =  updatedDist > maxDist ? updatedDist : maxDist;
+
             centroids[i] = newCent;
         }
         iterations++;

@@ -73,7 +73,6 @@ static PyObject* gl_module(PyObject *self, PyObject *args)
 static PyObject* kmeans_module(PyObject *self, PyObject *args)
 {
     int iter;
-    double epsilon;
     PyObject* centList;
     PyObject* pointList;
     PyObject* item;
@@ -84,7 +83,7 @@ static PyObject* kmeans_module(PyObject *self, PyObject *args)
     int i;
     int j;
 
-    if(!PyArg_ParseTuple(args, "idiOO", &iter, &epsilon,&m, &centList, &pointList)) {
+    if(!PyArg_ParseTuple(args, "idiOO", &iter,&m, &centList, &pointList)) {
         return NULL;
     }
 
@@ -138,7 +137,7 @@ static PyObject* kmeans_module(PyObject *self, PyObject *args)
             }
         }
     }
-    kmeans(iter, epsilon, k, centroids, points);
+    kmeans(iter, k, centroids, points);
     Py_RETURN_NONE;
 }
 

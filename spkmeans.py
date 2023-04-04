@@ -47,7 +47,7 @@ def main():
                 print(centroids_indexes[i], end=",")
             else:
                 print(centroids_indexes[i])
-        s = kmeans(300, 0, dim, centroids, vectors)
+        s = kmeans(300, dim, centroids, vectors)
 
 
 def kmeans_pp(vectors, k):
