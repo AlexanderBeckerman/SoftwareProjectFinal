@@ -27,10 +27,8 @@ double ** jacobi(double ** L, int n, int flag, int k)
         L = transform(L, n);
         offsetDiff = offset - getOff(L, n);
         offset = getOff(L, n);
-        if (offsetDiff <= epsilon)
-            break;
-        if (rotations != 0)
-            V = mult(V, L, n);
+        if (rotations != 0 && offsetDiff > epsilon)
+            V = mult(V, createP(L, n), n);
         rotations++;
     }
 
