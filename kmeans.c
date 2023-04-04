@@ -1,7 +1,7 @@
 #include "spkmeans.h"
 
 
-Vector * addVectors(Vector *, Vector *, int);
+Vector * addVectors(Vector *, Vector *);
 double calcDistance(Vector * , Vector *);
 int assignPoint(Vector *, Vector ** , int);
 void freeList(Vector *, int);
@@ -47,14 +47,14 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
         for(i = 0;i < k ; i++){
             int counter = 1;
             Vector *iterator = clusters[i];
-            Vector *newCent;
+            Vector *newCent = malloc((sizeof (Vector)));
             Cord * cordsIterator;
             if (iterator == NULL)
                 continue;
-            newCent = iterator;
+            *newCent = *iterator;
             iterator = iterator->next;
             while(iterator != NULL){
-                newCent = addVectors(newCent, iterator, newCent == clusters[i]);
+                *newCent = *addVectors(newCent, iterator);
                 iterator = iterator->next;
                 counter++;
             }
@@ -66,7 +66,7 @@ void kmeans(int iter, int k, Vector **py_centroids, Vector *py_points)
                 cordsIterator = cordsIterator->next;
             }
 
-            centroids[i] = newCent;
+            *centroids[i] = *newCent;
         }
         iterations++;
     }
@@ -122,7 +122,7 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
     return minind;
 }
 
-  Vector * addVectors(Vector * v1, Vector * v2, int flag){
+  Vector * addVectors(Vector * v1, Vector * v2){
     Vector * res = malloc(sizeof(Vector));
     Cord * resCord;
     Cord * v1Cord;
@@ -143,8 +143,6 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
             resCord = resCord->next;
     }
 
-    if (flag == 0)
-        flag++;
     return res;
 }
 
