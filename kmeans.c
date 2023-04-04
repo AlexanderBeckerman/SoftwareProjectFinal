@@ -142,7 +142,7 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
     }
 
     if (flag == 0)
-        freeVector(v1);
+        flag++;
     return res;
 }
 
