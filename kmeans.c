@@ -15,7 +15,7 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     Vector *head_vec;
     Vector *curr_vec;
     int i;
-    double EPSILON  = epsilon;
+    double EPSILON = epsilon;
     Vector ** centroids;
     Vector ** clusters;
     int iterations = 0;
@@ -25,10 +25,8 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
     centroids = py_centroids;
 
     while (iterations < iter && maxDist >= EPSILON) {
-        i = 0;
         freeArray(clusters, k, 2);
         clusters = calloc(k, sizeof(Vector));
-
         curr_vec = head_vec;
         maxDist = 0;
         while (curr_vec != NULL) {
@@ -48,7 +46,6 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
             }
             curr_vec = curr_vec->next;
         }
-
         for(i = 0;i < k ; i++){
             int counter = 1;
             Vector *iterator = clusters[i];
@@ -73,7 +70,6 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
             }
             updatedDist = calcDistance(centroids[i], newCent);
             maxDist =  updatedDist > maxDist ? updatedDist : maxDist;
-
             centroids[i] = newCent;
         }
         iterations++;
@@ -101,8 +97,11 @@ void kmeans(int iter, double epsilon, int k, Vector **py_centroids, Vector *py_p
 double calcDistance(Vector * point, Vector * centroid){
     double diff = 0;
     Cord * pointCords = point->cords;
-    Cord * centroidCords = centroid->cords;
-    while(pointCords != NULL){
+    Cord *centroidCords = NULL;
+    if (centroid != NULL) {
+        centroidCords = centroid->cords;
+    }
+    while(pointCords != NULL && centroidCords != NULL && pointCords->value && centroidCords->value){
         diff += pow(pointCords->value - centroidCords->value, 2);
         pointCords = pointCords->next;
         centroidCords = centroidCords->next;
@@ -113,10 +112,9 @@ double calcDistance(Vector * point, Vector * centroid){
 
 int assignPoint(Vector * point, Vector ** centroids, int k){
     double mindist = -1;
-    int i=0;
+    int i;
     int minind = 0;
-    for(;i<k;i++){
-
+    for(i = 0; i < k; i++){
         double dist = calcDistance(point, centroids[i]);
         if(mindist == -1){
             mindist = dist;
@@ -131,18 +129,24 @@ int assignPoint(Vector * point, Vector ** centroids, int k){
 }
 
 Vector * addVectors(Vector * v1, Vector * v2, int flag){
-    Vector * res = malloc(sizeof(Vector));
+    Vector * res = calloc(1, sizeof(Vector));
     Cord * resCord;
     Cord * v1Cord;
     Cord * v2Cord;
-    res->cords = malloc(sizeof (Cord));
+    if (v1 == NULL || v2 == NULL || !v1->cords || !v2->cords) {
+        if (v1 == NULL || !v1->cords)
+            return v2;
+        else
+            return v1;
+    }
+    res->cords = calloc(1, sizeof (Cord));
     res->next = NULL;
     resCord = res->cords;
     v1Cord = v1->cords;
     v2Cord = v2->cords;
     while(v1Cord != NULL){
         resCord->value = v1Cord->value + v2Cord->value;
-        resCord->next = malloc(sizeof (Cord));
+        resCord->next = calloc(1, sizeof (Cord));
         v1Cord = v1Cord->next;
         v2Cord = v2Cord->next;
         if (v1Cord == NULL)
@@ -200,4 +204,5 @@ void freeVector(Vector *vec)
     }
     free(vec);
 }
+
 
