@@ -102,8 +102,8 @@ int main(int argc, char *argv[]) {
         }
 
         if (strcmp(command, "jacobi") == 0)
-            free(result_mat - 1);
-        
+            free(*(result_mat - 1));
+
         for (i = 0; i < numpoints; i++)
             free(result_mat[i]);
         free(result_mat);
