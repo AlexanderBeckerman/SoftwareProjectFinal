@@ -82,8 +82,9 @@ static PyObject* kmeans_module(PyObject *self, PyObject *args)
     int k;
     int i;
     int j;
-
-    if(!PyArg_ParseTuple(args, "iiOO", &iter,&m, &centList, &pointList)) {
+    double ** points;
+    double ** centroids;
+    if(!PyArg_ParseTuple(args, "iiOO", &iter, &m, &centList, &pointList)) {
         return NULL;
     }
 
@@ -94,50 +95,26 @@ static PyObject* kmeans_module(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    Vector *points = malloc(sizeof (Vector));
-    Vector **centroids = calloc(k, sizeof (Vector));
-    Vector *pointsIter = points;
-    for (i = 0; i < n; i++) {
-        pointsIter->cords = malloc(sizeof (Cord));
-        pointsIter->next = NULL;
-        struct cord *cordsIter = pointsIter->cords;
-        for (j = 0; j < m; j++)
-        {
+    points = calloc(n, sizeof(double *));
+    for(i = 0; i < n; i++){
+        points[i] = calloc(m, sizeof(double));
+        for(j = 0; j < m; j++){
             item = PyList_GetItem(PyList_GetItem(pointList, i), j);
             num = PyFloat_AsDouble(item);
-            cordsIter->next = NULL;
-            cordsIter->value = num;
-            if (j != m - 1) {
-                cordsIter->next = malloc(sizeof (Cord));
-                cordsIter = cordsIter->next;
-            }
+            points[i][j] = num;
         }
-
-        if (i != n - 1) {
-            pointsIter->next = malloc(sizeof(Vector));
-            pointsIter = pointsIter->next;
-        }
-
     }
-
-    for (i = 0; i < k; i++) {
-        centroids[i] = malloc(sizeof (Vector));
-        centroids[i]->next = NULL;
-        centroids[i]->cords = malloc(sizeof (Cord));;
-        struct cord *cordsIter = centroids[i]->cords;
-        for (j = 0; j < m; j++)
-        {
+    centroids = calloc(k, sizeof(double *));
+    for(i = 0; i < k; i++){
+        centroids[i] = calloc(m, sizeof(double));
+        for(j = 0; j < m; j++){
             item = PyList_GetItem(PyList_GetItem(centList, i), j);
             num = PyFloat_AsDouble(item);
-            cordsIter->next = NULL;
-            cordsIter->value = num;
-            if (j != m - 1) {
-                cordsIter->next = malloc(sizeof (Cord));
-                cordsIter = cordsIter->next;
-            }
+            centroids[i][j] = num;
         }
     }
-    kmeans(iter, k, centroids, points);
+
+    kmeans(iter, k, centroids, points, m, n);
     Py_RETURN_NONE;
 }
 
