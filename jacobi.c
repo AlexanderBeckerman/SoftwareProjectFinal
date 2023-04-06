@@ -118,6 +118,8 @@ double** transform(double ** a , int n)
     newA[j][i] = (c*c - s*s)*a[i][j] + s*c*(a[i][i] - a[j][j]);
 
     freeMatrix(a, n);
+    free(iandj);
+    free(cands);
 
     return newA;
 
