@@ -14,6 +14,6 @@ double ** ddg(Vector * points, int n)
             sum += weighted[i][j];
         diagonal[i][i] = sum;
     }
-
+    freeMatrix(weighted, n);
     return diagonal;
 }

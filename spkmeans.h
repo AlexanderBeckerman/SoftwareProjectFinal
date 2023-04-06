@@ -27,3 +27,4 @@ double ** spk(Vector *, int, int);
 void pythonModule(char*, char*);
 double ** spkModule(char*, int);
 void kmeans(int, int, double **, double **, int, int);
+void freeMatrix(double **, int);

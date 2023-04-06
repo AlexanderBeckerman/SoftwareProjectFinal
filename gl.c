@@ -14,5 +14,7 @@ double ** gl(Vector * points, int n)
             laplacian[i][j] = diagonal[i][j] - weighted[i][j];
     }
 
+    freeMatrix(weighted, n);
+    freeMatrix(diagonal, n);
     return laplacian;
 }
