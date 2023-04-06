@@ -2,7 +2,7 @@
 double getOff(double ** ,int);
 double ** createP(double ** ,int);
 double* getCandS(double **, int);
-int* eigenGap(double *  ,int);
+int* eigenGap(double *  ,int, int);
 double** transform(double ** ,int);
 int* findLargestValue(double **  ,int);
 double ** mult(double **, double ** ,int);
@@ -43,12 +43,10 @@ double ** jacobi(double ** L, int n, int flag, int k)
         return V;
     }
 
-    eigenIndexes = eigenGap(eigenValues, n);
-    if (k == -1) {
-        gap = eigenIndexes[0];
-    }
-    else
-        gap = k;
+    eigenIndexes = eigenGap(eigenValues, n, k);
+
+    gap = eigenIndexes[0];
+
 
 
     result = calloc(n + 1, sizeof(double *));
@@ -61,6 +59,8 @@ double ** jacobi(double ** L, int n, int flag, int k)
         for (j = 0; j < gap; j++)
             result[i][j] = V[i][eigenIndexes[j + 1]];
     }
+
+
 
     freeMatrix(V, n);
     freeMatrix(L, n);
@@ -226,7 +226,7 @@ int compare(const void * a, const void * b)
         return 1;
 }
 
-int* eigenGap(double * eigenValues , int n)
+int* eigenGap(double * eigenValues , int n, int k)
 {
     double max = 0;
     int index=0, i, j = 0;
@@ -235,19 +235,28 @@ int* eigenGap(double * eigenValues , int n)
     for (i = 0; i < n; ++i)
         eigenCopy[i] = eigenValues[i];
     qsort(eigenCopy, n, sizeof (double), compare);
-    for (i = 0; i < n / 2 ; i++)
-    {
-        double gap = fabs(eigenCopy[i + 1] - eigenCopy[i]);
-        if (max < gap)
+    if(k == -1){
+        for (i = 0; i < n / 2 ; i++)
         {
-            max = gap;
-            index = i;
+            double gap = fabs(eigenCopy[i + 1] - eigenCopy[i]);
+            if (max < gap)
+            {
+                max = gap;
+                index = i;
+            }
         }
-    }
-    index++;
+        index++;
 
-    indexes = calloc(index + 1, sizeof (int));
-    indexes[0] = index;
+        indexes = calloc(index + 1, sizeof (int));
+        indexes[0] = index;
+    }
+    else{
+        indexes = calloc(k + 1, sizeof (int));
+        indexes[0] = k;
+        index = k;
+    }
+
+
     for (i = 0; i < index; i++)
         for (j = 0; j < n; j++)
             if (eigenValues[j] == eigenCopy[i])
