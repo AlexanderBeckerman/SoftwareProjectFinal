@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     int numpoints=0;
     char c;
     double ** jacboi_mat = NULL;
-    double ** result_mat;
+    double ** result_mat = NULL;
     struct vector *head_vec;
     struct vector *curr_vec;
     struct cord *head_cord;
@@ -172,5 +172,18 @@ double ** spkModule(char* filename, int k)
     }
 
     p = spk(head_vec, numpoints, k);
+    while (head_vec != NULL)
+    {
+        curr_vec = head_vec;
+        head_vec = head_vec->next;
+        head_cord = curr_vec->cords;
+        while (head_cord != NULL)
+        {
+            curr_cord = head_cord;
+            head_cord = head_cord->next;
+            free(curr_cord);
+        }
+        free(curr_vec);
+    }
     return p;
 }
