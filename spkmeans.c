@@ -106,6 +106,20 @@ int main(int argc, char *argv[]) {
         free(result_mat);
     }
 
+    while (head_vec != NULL)
+    {
+        curr_vec = head_vec;
+        head_vec = head_vec->next;
+        head_cord = curr_vec->cords;
+        while (head_cord != NULL)
+        {
+            curr_cord = head_cord;
+            head_cord = head_cord->next;
+            free(curr_cord);
+        }
+        free(curr_vec);
+    }
+
     return 0;
 }
 
